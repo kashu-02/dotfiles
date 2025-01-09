@@ -55,6 +55,7 @@
         ./hosts/macbookairm1
         home-manager.darwinModules.home-manager
             {
+              users.users.shun.home = "/Users/shun";
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/mac-thinclient.nix;
