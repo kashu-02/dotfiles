@@ -1,7 +1,7 @@
 {
   description = "kashu's Nix Configuration with flakes";
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/release-24.05";
+    nixpkgs.url = "github:NixOS/nixpkgs/release-24.11";
 
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     
@@ -11,7 +11,7 @@
     };
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.05";
+      url = "github:nix-community/home-manager/release-24.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -24,16 +24,35 @@
       nix-darwin,
       home-manager
     }:{
-    nixosConfigurations.kashu-lab-nixos = nixpkgs.lib.nixosSystem {
+    nixosConfigurations.kashu-lab-nixos = let 
+      username = "kashu";
+      specialArgs = {
+        inherit username;
+      };
+      in 
+      nixpkgs.lib.nixosSystem {
       system = "x86_64-linux";
       modules = [ 
-      	./kashu-lab-nixos-configuration.nix
-	home-manager.nixosModules.home-manager
-          {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.kashu = import ./home-manager/lab-pc-home.nix;
-          }
+      	./hosts/lab-pc/kashu-lab-nixos-configuration.nix
+        home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./home-manager/lab-pc-home.nix;
+            }
+      ];
+    };
+
+    darwinConfigurations.Shunsukes-MacBook-Air = nix-darwin.lib.darwinSystem {
+      system = "aarch64-darwin";
+      modules = [
+        ./hosts/macbookairm1
+        # home-manager.nixosModules.home-manager
+        #     {
+        #       home-manager.useGlobalPkgs = true;
+        #       home-manager.useUserPackages = true;
+        #       home-manager.users.kashu = import ./home-manager/lab-pc-home.nix;
+        #     }
       ];
     };
    };
