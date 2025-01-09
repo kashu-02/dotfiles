@@ -53,7 +53,7 @@
       system = "aarch64-darwin";
       modules = [
         ./hosts/macbookairm1
-        home-manager.nixosModules.home-manager
+        home-manager.darwinModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
