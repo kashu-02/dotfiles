@@ -43,16 +43,22 @@
       ];
     };
 
-    darwinConfigurations.Shunsukes-MacBook-Air = nix-darwin.lib.darwinSystem {
+    darwinConfigurations.Shunsukes-MacBook-Air = let 
+      username = "shun";
+      specialArgs = {
+        inherit username;
+      };
+    in 
+    nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
       modules = [
         ./hosts/macbookairm1
-        # home-manager.nixosModules.home-manager
-        #     {
-        #       home-manager.useGlobalPkgs = true;
-        #       home-manager.useUserPackages = true;
-        #       home-manager.users.kashu = import ./home-manager/lab-pc-home.nix;
-        #     }
+        home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./users/mac-thinclient.nix;
+            }
       ];
     };
    };
