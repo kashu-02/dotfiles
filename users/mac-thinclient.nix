@@ -14,7 +14,7 @@
   home.packages = with pkgs; [
 	  wget
     neofetch
-    openssh_hpn
+    openssh_hpngit
     gcc
     python3
     gnupg
