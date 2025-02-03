@@ -12,12 +12,9 @@
 
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
-    vim
-	  neofetch
 	  wget
     neofetch
     openssh_hpn
-    git
     gcc
     python3
     gnupg
