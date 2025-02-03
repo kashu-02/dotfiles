@@ -8,6 +8,11 @@
     initExtra = ''
       fastfetch
     '';
+    autosuggestion.enable = true;
+    history.share = true;
+    history.size = 1000000;
+    syntaxHighlighting.enable = true;
+    
     zplug = {
       enable = true;
       plugins = [
