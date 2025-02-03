@@ -7,7 +7,7 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./kashu-dev-nix-hardware-configuration.nix
+      ./dev-nix-hardware-configuration.nix
     ];
 
   # Bootloader.
