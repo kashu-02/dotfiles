@@ -49,30 +49,7 @@
     EDITOR = "vim";
   };
 
-  programs.git = {
-    enable = true;
-    userName = "kashu-02";
-    userEmail = "64694079+kashu-02@users.noreply.github.com";
-  };
-
-  programs.zsh = {
-    enable = true;
-    shellAliases = {
-      la = "ls -alh";
-      ll = "ls -lh";
-    };
-    initExtra = ''
-        neofetch
-    '';
-    zplug = {
-      enable = true;
-      plugins = [
-        { name = "mafredri/zsh-async"; tags = [from:github]; }
-        { name = "zsh-users/zsh-autosuggestions"; }
-        { name = "sindresorhus/pure"; tags = [use:pure.zsh from:github as:theme]; }
-      ];
-    };
-  };
+  
 
 
   programs.neovim = {

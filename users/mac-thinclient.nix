@@ -13,8 +13,8 @@
   # Packages that should be installed to the user profile.
   home.packages = with pkgs; [
 	  wget
-    neofetch
-    openssh_hpngit
+    fastfetch
+    openssh_hpn
     gcc
     python3
     gnupg
