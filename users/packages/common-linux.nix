@@ -4,9 +4,12 @@
   ...
 }: {
   imports = [
+    ./ssh.nix
     ./git.nix
     ./nvim.nix
     ./zsh.nix
+    ./tmux.nix
+    ./direnv.nix
   ];
 
   
@@ -30,27 +33,11 @@
     # (pkgs.writeShellScriptBin "my-hello" ''
     #   echo "Hello, ${config.home.username}!"
     # '')
-    google-chrome
-    slack
-    discord
-    _1password-gui
-    thunderbird
-    vlc
-    vscode
     nodejs
-    xarchiver
-    gimp
-    libreoffice
-    bottom
     fastfetch
-    arandr
-    pavucontrol
-    evince
-    tmux
     htop
-    jetbrains-toolbox
-    xclip
-    maim
-    wine
+    kubectl
+    kubernetes-helm
+    peco
   ];
 }
