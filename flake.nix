@@ -38,7 +38,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./home-manager/dev-nix-home.nix;
+              home-manager.users.${username} = import ./users/dev-nix-home.nix;
             }
       ];
     };
@@ -57,7 +57,7 @@
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./home-manager/lab-pc-home.nix;
+              home-manager.users.${username} = import ./users/lab-pc-home.nix;
             }
       ];
     };
