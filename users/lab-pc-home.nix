@@ -3,6 +3,7 @@
 {
   imports = [
     ./packages/common-linux.nix
+    ./packages/linux-desktop.nix
   ];
   
   # Home Manager needs a bit of information about you and the paths it should

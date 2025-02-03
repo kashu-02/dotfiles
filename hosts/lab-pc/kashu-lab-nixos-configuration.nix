@@ -35,12 +35,6 @@
   };
   networking.nameservers = ["192.168.50.1"];
 
-  programs.nm-applet.enable = true;
-
-  # Bluetooth Settings
-  hardware.bluetooth.enable = true;
-  services.blueman.enable = true;
-
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
   time.hardwareClockInLocalTime = true;
@@ -96,7 +90,7 @@
       enable = true;
       extraPackages = with pkgs;[
         rofi
-	polybar
+	      polybar
         i3lock
       ];
     };
