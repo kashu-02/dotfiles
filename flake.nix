@@ -24,6 +24,25 @@
       nix-darwin,
       home-manager
     }:{
+    nixosConfigurations.dev-nix = let 
+      username = "kashu";
+      specialArgs = {
+        inherit username;
+      };
+      in 
+      nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ 
+      	./hosts/dev-nix/dev-nix-configuration.nix
+        home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./home-manager/dev-nix-home.nix;
+            }
+      ];
+    };
+
     nixosConfigurations.kashu-lab-nixos = let 
       username = "kashu";
       specialArgs = {
