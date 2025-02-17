@@ -3,6 +3,10 @@
   pkgs,
   ...
 }: {
+  imports = [
+    vscode.nix
+  ];
+
   home.packages = with pkgs; [
     google-chrome
     slack
@@ -10,7 +14,6 @@
     _1password-gui
     thunderbird
     vlc
-    vscode
     nodejs
     xarchiver
     gimp
