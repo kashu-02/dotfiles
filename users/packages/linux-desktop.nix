@@ -6,6 +6,7 @@
   imports = [
     ./vscode.nix
     ./wezterm.nix
+    ./rofi.nix
   ];
 
   home.packages = with pkgs; [
