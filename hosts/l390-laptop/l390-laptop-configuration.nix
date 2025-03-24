@@ -96,10 +96,10 @@
    windowManager.i3 = {
   	enable = true;
     	extraPackages = with pkgs;[
-  	  dmenu
-	  i3status
-	  i3lock
-	];
+  	    rofi
+        polybar
+	      i3lock
+	    ];
     };
   };
 
@@ -123,6 +123,7 @@
   #   extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker"];
   #   packages = with pkgs; [];
   # };
+  
   users.users.kashu = {
     isNormalUser = true;
     description = "kashu";

@@ -50,6 +50,68 @@
     EDITOR = "vim";
   };
 
+  programs.i3status-rust = {
+    enable = true;
+    bars = {
+      top = {
+        blocks = [
+         {
+           block = "battery";
+           format = " $icon $percentage.eng(w:5) ";
+           full_format =  " $icon $percentage.eng(w:5) ";
+           charging_format =  " $icon $percentage.eng(w:5) ";
+           empty_format =  " $icon $percentage.eng(w:5) ";
+           not_charging_format =  " $icon $percentage.eng(w:5) ";
+           missing_format = "";
+           interval = 1;
+           driver = "sysfs";
+         }
+         {
+           block = "cpu";
+         }
+         {
+           block = "memory";
+           format = " $icon $mem_total_used.eng(w:2) ";
+           format_alt = " $icon_swap $swap_used_percents.eng(w:2) ";
+         }
+         {
+           block = "sound";
+           driver = "pulseaudio";
+         }
+         {
+           block = "net";
+           format = " $icon {$signal_strength $ssid|Wired} ipv4: $ip ipv6: $ipv6 ";
+         }
+         {
+           block = "time";
+           interval = 5;
+           format = " $timestamp.datetime(f:'%m/%d (%a) %T')";
+         }
+       ];
+       theme = "gruvbox-dark";
+      };
+    };
+  };
+
+  xsession.windowManager.i3 = {
+    enable = true;
+    config = {
+      bars = [
+        {
+          position = "top";
+          statusCommand = "${pkgs.i3status-rust}/bin/i3status-rs ~/.config/i3status-rust/config-top.toml";
+        }
+      ];
+      startup = [
+        { command = "nm-applet"; notification = false;}
+        { command = "fcitx5 -d"; notification = false;}
+        { command = "xinput set-button-map 'Elan TrackPoint' 1 0 3 4 5 6 7 && xinput --set-prop\"Elan TrackPoint\" \"libinput Accel Speed\" 0.8"; notification = false;}
+      ];
+      modifier = "Mod4";
+      terminal = "wezterm";
+      menu = "rofi -show combi";
+    };
+  };
   
 
 
