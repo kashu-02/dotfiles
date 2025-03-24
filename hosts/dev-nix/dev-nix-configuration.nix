@@ -44,7 +44,7 @@
     interface = "ens18";
   };
   
-  networking.nameservers = ["172.16.10.1" "1.1.1.1" "1.0.0.1"];
+  networking.nameservers = ["172.16.10.254" "1.1.1.1" "1.0.0.1"];
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -172,6 +172,11 @@
     port = 9090;
     enabledCollectors = [ "systemd" ];
     extraFlags = [ "--collector.ethtool" "--collector.softirqs" "--collector.tcpstat" ];
+  };
+
+  services.ollama = {
+    enable = true;
+    host = "0.0.0.0";
   };
 
   # Nix Storage Optimization
