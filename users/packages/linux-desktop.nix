@@ -5,6 +5,7 @@
 }: {
   imports = [
     ./vscode.nix
+    ./wezterm.nix
   ];
 
   home.packages = with pkgs; [
@@ -22,7 +23,6 @@
     arandr
     pavucontrol
     evince
-    tmux
     htop
     jetbrains-toolbox
     xclip
