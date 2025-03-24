@@ -59,7 +59,6 @@
     enabled = "fcitx5";
     fcitx5.addons = with pkgs;[
       fcitx5-mozc
-      fcitx5-skk
       fcitx5-gtk
    #   libsForQt5.fcitx5-qt
     ];
@@ -68,7 +67,7 @@
   fonts.packages = with pkgs;[
     ipafont
     noto-fonts
-    noto-fonts-cjk
+    noto-fonts-cjk-sans
     noto-fonts-emoji
   ];
 
@@ -90,7 +89,7 @@
       enable = true;
       extraPackages = with pkgs;[
         rofi
-	      polybar
+	polybar
         i3lock
       ];
     };
@@ -130,8 +129,6 @@
     unzip
     traceroute
     dig
-    skktools
-    skk-dicts
   ];
 
   # Flakes
@@ -180,11 +177,13 @@
     };
   };
 
+  services.ollama.enable = true;
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  # networking.firewall.enable = false;
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
