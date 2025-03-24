@@ -10,6 +10,7 @@
     ./zsh.nix
     ./tmux.nix
     ./direnv.nix
+    ./gpg.nix
   ];
 
   
