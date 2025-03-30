@@ -152,7 +152,7 @@
   };
 
   fileSystems."/mnt/dev" = {
-    device = "192.168.2.120:/mnt/data1/dev";
+    device = "172.20.0.10:/mnt/dev-data/dev";
     fsType = "nfs4";
   };
 
