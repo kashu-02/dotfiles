@@ -62,7 +62,26 @@
       ];
     };
 
-    darwinConfigurations.Shunsukes-MacBook-Air = let 
+     nixosConfigurations.l390-laptop = let 
+      username = "kashu";
+      specialArgs = {
+        inherit username;
+      };
+      in 
+      nixpkgs.lib.nixosSystem {
+      system = "x86_64-linux";
+      modules = [ 
+      	./hosts/l390-laptop/l390-laptop-configuration.nix
+        home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./users/l390-laptop.nix;
+            }
+      ];
+    };
+
+   darwinConfigurations.Shunsukes-MacBook-Air = let 
       username = "shun";
       specialArgs = {
         inherit username;

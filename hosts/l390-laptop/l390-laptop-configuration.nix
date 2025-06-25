@@ -7,33 +7,45 @@
 {
   imports =
     [ # Include the results of the hardware scan.
-      ./kashu-lab-nixos-hardware-configuration.nix
+      ./l390-laptop-hardware-configuration.nix
     ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
-  networking.hostName = "kashu-lab-nixos"; # Define your hostname.
-  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Enable networking
-  networking.networkmanager.enable = false;
+  networking = {
+	hostName = "l390-laptop";
+	# wireless.iwd.enable = true;
+	networkmanager = {
+		enable = true;
+		# wifi.backend = "iwd";
+	};
+  };
+  programs.nm-applet.enable = true;
 
-  networking.interfaces.enp1s0 = {
-    ipv4.addresses = [{
-      address = "192.168.50.100";
-      prefixLength = 24;
-    }];
+  # Bluetooth Settings 
+  hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+ 
+ 
+  # Brightness
+  programs.light.enable = true;
+
+  # Input devices
+  hardware.trackpoint = {
+	enable = true;
+	emulateWheel = true;
+	speed = 1;
+	sensitivity = 1;
+	device = "Elan TrackPoint";
   };
-  networking.defaultGateway = {
-    address = "192.168.50.1";
-  };
-  networking.nameservers = ["192.168.50.1"];
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -51,79 +63,88 @@
     LC_NUMERIC = "ja_JP.UTF-8";
     LC_PAPER = "ja_JP.UTF-8";
     LC_TELEPHONE = "ja_JP.UTF-8";
-    LC_TIME = "ja_JP.UTF-8";
+    LC_TIME = "en_US.UTF-8";
   };
-
-  # IME
+  
   i18n.inputMethod = {
-    enabled = "fcitx5";
-    fcitx5.addons = with pkgs;[
-      fcitx5-mozc
-      fcitx5-gtk
-   #   libsForQt5.fcitx5-qt
-    ];
+    enable = true;
+    type = "fcitx5";
+    fcitx5.addons = with pkgs; [fcitx5-mozc fcitx5-skk fcitx5-gtk libsForQt5.fcitx5-qt];
   };
-
-  fonts.packages = with pkgs;[
-    ipafont
-    noto-fonts
-    noto-fonts-cjk-sans
-    noto-fonts-emoji
+  fonts.packages = with pkgs; [
+  	ipafont
+  	noto-fonts
+	noto-fonts-cjk-sans
+	noto-fonts-emoji
+        jetbrains-mono
   ];
+
+
+  environment.pathsToLink = ["/libexec"];
 
   # Configure keymap in X11
   services.xserver = {
     enable = true;
-    layout = "us";
-    xkbVariant = "";
-    xkbOptions = "ctrl:nocaps, ";
-    dpi = 130;
-    libinput.mouse.accelSpeed = "0.8";
+    xkb = {
+      variant = "";
+      options = "ctrl:nocaps";
+      layout = "us";
+    };
     desktopManager = {
-      xterm.enable = false;
+	xterm.enable = false;
     };
-    displayManager = {
-      defaultSession = "none+i3";
-    };
-    windowManager.i3 = {
-      enable = true;
-      extraPackages = with pkgs;[
-        rofi
-	polybar
-        i3lock
-      ];
+   windowManager.i3 = {
+  	enable = true;
+    	extraPackages = with pkgs;[
+  	    rofi
+        polybar
+	      i3lock
+	    ];
     };
   };
 
-  environment.pathsToLink = [ "/libexec" ];
+  services.displayManager = {
+    defaultSession = "none+i3";
+  };
+ 
+  services.libinput = {
+    enable = true;
+    touchpad.disableWhileTyping = true;
+  };
+
+  # Configure console keymap
+  console.keyMap = "us";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
+  # users.users.shun = {
+  #   isNormalUser = true;
+  #   description = "shun";
+  #   shell = pkgs.zsh;
+  #   extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker"];
+  #   packages = with pkgs; [];
+  # };
+  
   users.users.kashu = {
     isNormalUser = true;
     description = "kashu";
-    extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker" "libvirtd" ];
-    packages = with pkgs; [];
     shell = pkgs.zsh;
+    extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker"];
+    packages = with pkgs; [];
   };
- 
-  users.groups.nfsgroup = {
-    members = ["kashu"];
-    gid = 1000;
-  };
+  nix.settings.allowed-users = [ "shun" "kashu"];
 
-  # Shell settings
-  programs.zsh.enable = true;
-  environment.shells = with pkgs;[ zsh ];
-
-  # Allow unfree packages
+    # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
+
+  programs.zsh.enable = true;
+  environment.shells = with pkgs; [ zsh ];
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    emacs
     wget
-    wezterm
     openssl
     zip
     unzip
@@ -131,31 +152,23 @@
     dig
   ];
 
-  # Flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
-  # Nix-ld for such as VSCode
+  # Nix-ld
   programs.nix-ld.enable = true;
+
+  # Cloudflare-WARP
+  services.cloudflare-warp = {
+    enable = true;
+  };
 
   # Docker
   virtualisation.docker.enable = true;
-
-  # libvirt
-  virtualisation.libvirtd.enable = true;
-  programs.virt-manager.enable = true;
-
-  # Nix Storage Optimization
+ 
+  # nix storag optimization
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 90d";
   };
-
-  fileSystems."/mnt/dev" = {
-    device = "172.20.0.10:/mnt/dev-data/dev";
-    fsType = "nfs4";
-  };
-
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -167,23 +180,15 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-  services.openssh = {
-    enable = true;
-    ports = [56755];
-    settings = {
-      PermitRootLogin = "no";
-      PasswordAuthentication = false;
-      X11Forwarding = true;
-    };
-  };
-
-  services.ollama.enable = true;
+   services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
-  networking.firewall.enable = false;
+  # networking.firewall.enable = false;
+
+  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
@@ -191,6 +196,6 @@
   # this value at the release version of the first install of this system.
   # Before changing this value read the documentation for this option
   # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.11"; # Did you read the comment?
+  system.stateVersion = "22.11"; # Did you read the comment?
 
 }
