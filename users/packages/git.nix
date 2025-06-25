@@ -13,7 +13,7 @@
       pu = "push origin";
       pl = "pull origin";
     };
-    ignores = [".idea/"];
+    ignores = [".idea/" ".direnv/"];
     signing = {
       key = "0F4484A65691E216";
       signByDefault = true;

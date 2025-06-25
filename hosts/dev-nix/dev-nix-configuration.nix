@@ -185,6 +185,11 @@
     dates = "weekly";
     options = "--delete-older-than 90d";
   };
+ 
+  swapDevices = [ {
+    device = "/var/lib/swapfile";
+    size = 16*1024;
+  } ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
