@@ -40,5 +40,6 @@
     kubectl
     kubernetes-helm
     peco
+    gemini-cli
   ];
 }
