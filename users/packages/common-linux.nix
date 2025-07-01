@@ -41,5 +41,6 @@
     kubernetes-helm
     peco
     gemini-cli
+    claude-code
   ];
 }
