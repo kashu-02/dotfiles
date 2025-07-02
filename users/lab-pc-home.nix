@@ -5,7 +5,7 @@
     ./packages/common-linux.nix
     ./packages/linux-desktop.nix
   ];
-  
+
   # Home Manager needs a bit of information about you and the paths it should
   # manage.
   home.username = "kashu";
@@ -50,15 +50,12 @@
     EDITOR = "vim";
   };
 
-  
-
-
   programs.neovim = {
     enable = true;
     plugins = [
       pkgs.vimPlugins.coc-nvim
     ];
-  }; 
+  };
 
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
