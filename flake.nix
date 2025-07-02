@@ -12,7 +12,7 @@
 
     home-manager = {
       url = "github:nix-community/home-manager/release-25.05";
-      inputs.nixpkgs.follows = "nixpkgs-unstable";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -29,9 +29,20 @@
       specialArgs = {
         inherit username;
       };
+      system = "x86_64-linux";
+      unstable-overlays = {
+        nixpkgs.overlays = [
+          (final: prev: {
+             unstable = import nixpkgs-unstable {
+               inherit system;
+               config.allowUnfree = true;
+             };
+          })
+        ];
+      };
       in 
       nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
       modules = [ 
       	./hosts/dev-nix/dev-nix-configuration.nix
         home-manager.nixosModules.home-manager
@@ -40,6 +51,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/dev-nix-home.nix;
             }
+        unstable-overlays
       ];
     };
 
@@ -48,9 +60,20 @@
       specialArgs = {
         inherit username;
       };
+      system = "x86_64-linux";
+      unstable-overlays = {
+        nixpkgs.overlays = [
+          (final: prev: {
+             unstable = import nixpkgs-unstable {
+               inherit system;
+               config.allowUnfree = true;
+             };
+          })
+        ];
+      };
       in 
       nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
       modules = [ 
       	./hosts/lab-pc/kashu-lab-nixos-configuration.nix
         home-manager.nixosModules.home-manager
@@ -59,6 +82,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/lab-pc-home.nix;
             }
+        unstable-overlays
       ];
     };
 
@@ -67,9 +91,20 @@
       specialArgs = {
         inherit username;
       };
+      system = "x86_64-linux";
+      unstable-overlays = {
+        nixpkgs.overlays = [
+          (final: prev: {
+             unstable = import nixpkgs-unstable {
+               inherit system;
+               config.allowUnfree = true;
+             };
+          })
+        ];
+      };
       in 
       nixpkgs.lib.nixosSystem {
-      system = "x86_64-linux";
+      inherit system;
       modules = [ 
       	./hosts/l390-laptop/l390-laptop-configuration.nix
         home-manager.nixosModules.home-manager
@@ -78,6 +113,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/l390-laptop.nix;
             }
+        unstable-overlays
       ];
     };
 
@@ -86,9 +122,20 @@
       specialArgs = {
         inherit username;
       };
-    in 
-    nix-darwin.lib.darwinSystem {
       system = "aarch64-darwin";
+      unstable-overlays = {
+        nixpkgs.overlays = [
+          (final: prev: {
+             unstable = import nixpkgs-unstable {
+               inherit system;
+               config.allowUnfree = true;
+             };
+          })
+        ];
+      };
+     in 
+    nix-darwin.lib.darwinSystem {
+      inherit system;
       modules = [
         ./hosts/macbookairm1
         home-manager.darwinModules.home-manager
@@ -98,6 +145,7 @@
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/mac-thinclient.nix;
             }
+      unstable-overlays
       ];
     };
    };
