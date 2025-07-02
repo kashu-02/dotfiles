@@ -62,7 +62,6 @@
     fcitx5.addons = with pkgs; [
       fcitx5-mozc
       fcitx5-gtk
-      #   libsForQt5.fcitx5-qt
     ];
   };
 
@@ -167,6 +166,8 @@
     device = "172.20.0.10:/mnt/dev-data/dev";
     fsType = "nfs4";
   };
+
+  services.printing.enable = true;
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
