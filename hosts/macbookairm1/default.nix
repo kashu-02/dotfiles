@@ -4,6 +4,8 @@
   # $ nix-env -qaP | grep wget
   environment.systemPackages = with pkgs; [ ];
 
+  nixpkgs.config.allowUnfree = true;
+
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
 
