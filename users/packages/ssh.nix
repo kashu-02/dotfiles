@@ -30,5 +30,10 @@
       hostname = "linsv.u-aizu.ac.jp";
       proxyJump = "u-aizu";
     };
+    matchBlocks."llmsv" = {
+      hostname = "192.168.11.250";
+      identityFile = "~/.ssh/github";
+    };
+
   };
 }
