@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./kashu-lab-nixos-hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./kashu-lab-nixos-hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -25,15 +25,17 @@
   networking.networkmanager.enable = false;
 
   networking.interfaces.enp1s0 = {
-    ipv4.addresses = [{
-      address = "192.168.50.100";
-      prefixLength = 24;
-    }];
+    ipv4.addresses = [
+      {
+        address = "192.168.50.100";
+        prefixLength = 24;
+      }
+    ];
   };
   networking.defaultGateway = {
     address = "192.168.50.1";
   };
-  networking.nameservers = ["192.168.50.1"];
+  networking.nameservers = [ "192.168.50.1" ];
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -57,14 +59,14 @@
   # IME
   i18n.inputMethod = {
     enabled = "fcitx5";
-    fcitx5.addons = with pkgs;[
+    fcitx5.addons = with pkgs; [
       fcitx5-mozc
       fcitx5-gtk
-   #   libsForQt5.fcitx5-qt
+      #   libsForQt5.fcitx5-qt
     ];
   };
 
-  fonts.packages = with pkgs;[
+  fonts.packages = with pkgs; [
     ipafont
     noto-fonts
     noto-fonts-cjk-sans
@@ -87,9 +89,9 @@
     };
     windowManager.i3 = {
       enable = true;
-      extraPackages = with pkgs;[
+      extraPackages = with pkgs; [
         rofi
-	polybar
+        polybar
         i3lock
       ];
     };
@@ -101,19 +103,26 @@
   users.users.kashu = {
     isNormalUser = true;
     description = "kashu";
-    extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker" "libvirtd" ];
-    packages = with pkgs; [];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "audio"
+      "video"
+      "docker"
+      "libvirtd"
+    ];
+    packages = with pkgs; [ ];
     shell = pkgs.zsh;
   };
- 
+
   users.groups.nfsgroup = {
-    members = ["kashu"];
+    members = [ "kashu" ];
     gid = 1000;
   };
 
   # Shell settings
   programs.zsh.enable = true;
-  environment.shells = with pkgs;[ zsh ];
+  environment.shells = with pkgs; [ zsh ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -132,7 +141,10 @@
   ];
 
   # Flakes
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # Nix-ld for such as VSCode
   programs.nix-ld.enable = true;
@@ -169,7 +181,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    ports = [56755];
+    ports = [ 56755 ];
     settings = {
       PermitRootLogin = "no";
       PasswordAuthentication = false;

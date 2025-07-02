@@ -1,4 +1,5 @@
-{ pkgs, ...} : {
+{ pkgs, ... }:
+{
   programs.zsh = {
     enable = true;
     shellAliases = {
@@ -12,13 +13,23 @@
     history.share = true;
     history.size = 1000000;
     syntaxHighlighting.enable = true;
-    
+
     zplug = {
       enable = true;
       plugins = [
-        { name = "mafredri/zsh-async"; tags = [from:github]; }
+        {
+          name = "mafredri/zsh-async";
+          tags = [ "from:github" ];
+        }
         { name = "zsh-users/zsh-autosuggestions"; }
-        { name = "sindresorhus/pure"; tags = [use:pure.zsh from:github as:theme]; }
+        {
+          name = "sindresorhus/pure";
+          tags = [
+            "use:pure.zsh"
+            "from:github"
+            "as:theme"
+          ];
+        }
       ];
     };
   };
