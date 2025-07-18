@@ -61,7 +61,10 @@
     variant = "";
   };
 
-  programs.hyprland.enable = true;
+  programs.hyprland = {
+    enable = true;
+    withUWSM = true;
+  };
 
   programs.zsh.enable = true;
 
