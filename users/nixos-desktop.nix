@@ -69,6 +69,8 @@
     fcitx5.waylandFrontend = true;
   };
 
+  services.blueman-applet.enable = true;
+
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }

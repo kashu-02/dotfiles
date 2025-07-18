@@ -21,6 +21,7 @@
         "$mod, G, exec, google-chrome-stable"
         ", Print, exec, grimblast copy area"
         "$mod, D, exec, rofi -show combi"
+        "$mod SHIFT, Q, killactive"
       ]
       ++ (
         # workspaces

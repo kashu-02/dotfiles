@@ -42,6 +42,11 @@
   networking.defaultGateway = "172.16.10.1";
   networking.nameservers = [ "172.16.10.254" ];
 
+  # Bluetooth
+  hardware.bluetooth.enable = true;
+  hardware.bluetooth.powerOnBoot = true;
+  services.blueman.enable = true ;
+
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
 
