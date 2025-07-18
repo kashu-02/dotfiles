@@ -13,6 +13,7 @@
 
     exec-once = [
       "waybar"
+      "fcitx5 -d"
     ];
     bind =
       [
