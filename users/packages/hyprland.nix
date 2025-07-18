@@ -12,8 +12,11 @@
     "$mod" = "SUPER";
 
     exec-once = [
-      "waybar"
       "fcitx5 -d"
+      "[workspace 9 silent] thunderbird"
+      "[workspace 8 silent] discord"
+      "[workspace 7 silent] slack"
+      "jetbrains-toolbox"
     ];
     bind =
       [
