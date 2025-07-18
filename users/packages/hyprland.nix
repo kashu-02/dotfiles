@@ -39,9 +39,10 @@
       );
     monitor = "DP-1, 3840x2160@60, 0x0, 1.2";
     xwayland.force_zero_scaling = true;
-    env = ["GDK_SCALE,2"
- "XCURSOR_SIZE,32"
- ];
+    env = [
+      "GDK_SCALE,2"
+      "XCURSOR_SIZE,32"
+    ];
   };
 
   home.sessionVariables.NIXOS_OZONE_WL = 1;
