@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./nixos-desktop-hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./nixos-desktop-hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -26,16 +26,21 @@
   networking.useDHCP = false;
 
   networking.vlans = {
-    vlan100 = { id=100; interface="enp1s0"; };
+    vlan100 = {
+      id = 100;
+      interface = "enp1s0";
+    };
   };
   networking.interfaces.vlan100 = {
-    ipv4.addresses = [{
-      address = "172.16.10.11";
-      prefixLength = 24;
-    }];
+    ipv4.addresses = [
+      {
+        address = "172.16.10.11";
+        prefixLength = 24;
+      }
+    ];
   };
   networking.defaultGateway = "172.16.10.1";
-  networking.nameservers= ["172.16.10.254"];
+  networking.nameservers = [ "172.16.10.254" ];
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -55,6 +60,12 @@
     LC_TIME = "ja_JP.UTF-8";
   };
 
+  fonts.packages = with pkgs; [
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-emoji
+  ];
+
   # Configure keymap in X11
   services.xserver.xkb = {
     layout = "us";
@@ -72,8 +83,11 @@
   users.users.kashu = {
     isNormalUser = true;
     description = "kashu";
-    extraGroups = [ "networkmanager" "wheel" ];
-    packages = with pkgs; [];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+    ];
+    packages = with pkgs; [ ];
     shell = pkgs.zsh;
   };
 
@@ -126,7 +140,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-   services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
