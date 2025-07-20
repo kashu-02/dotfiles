@@ -46,7 +46,7 @@
     xwayland.force_zero_scaling = true;
     env = [
       "GDK_SCALE,2"
-      "XCURSOR_SIZE,32"
+      "XCURSOR_SIZE,64"
     ];
     input.natural_scroll = true;
   };

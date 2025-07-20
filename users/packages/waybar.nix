@@ -54,17 +54,22 @@
       };
       cpu = {
         format = "CPU: {}%";
+        interval = 1;
       };
       memory = {
         format = "Mem: {}%";
+        interval = 1;
       };
       temperature = {
         format = "Temp: {temperatureC}°C";
+        interval = 1;
+        hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
       };
       network = {
         interface = "vlan100";
         format-ethernet = "↑ {bandwidthUpBits} / ↓ {bandwidthDownBits} | {bandwidthTotalBits}";
         format-disconnected = "Disconnected";
+        interval = 1;
       };
       privacy = {
         modules = [
