@@ -54,13 +54,6 @@
     EDITOR = "vim";
   };
 
-  programs.gpg.enable = true;
-  services.gpg-agent = {
-    enable = true;
-    enableSshSupport = true;
-    pinentryPackage = pkgs.pinentry-gtk2;
-  };
-
   # Let Home Manager install and manage itself.
   programs.home-manager.enable = true;
 }

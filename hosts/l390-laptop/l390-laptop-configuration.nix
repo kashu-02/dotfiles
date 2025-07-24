@@ -5,10 +5,10 @@
 { config, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./l390-laptop-hardware-configuration.nix
-    ];
+  imports = [
+    # Include the results of the hardware scan.
+    ./l390-laptop-hardware-configuration.nix
+  ];
 
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
@@ -21,30 +21,29 @@
 
   # Enable networking
   networking = {
-	hostName = "l390-laptop";
-	# wireless.iwd.enable = true;
-	networkmanager = {
-		enable = true;
-		# wifi.backend = "iwd";
-	};
+    hostName = "l390-laptop";
+    # wireless.iwd.enable = true;
+    networkmanager = {
+      enable = true;
+      # wifi.backend = "iwd";
+    };
   };
   programs.nm-applet.enable = true;
 
-  # Bluetooth Settings 
+  # Bluetooth Settings
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
- 
- 
+
   # Brightness
   programs.light.enable = true;
 
   # Input devices
   hardware.trackpoint = {
-	enable = true;
-	emulateWheel = true;
-	speed = 1;
-	sensitivity = 1;
-	device = "Elan TrackPoint";
+    enable = true;
+    emulateWheel = true;
+    speed = 1;
+    sensitivity = 1;
+    device = "Elan TrackPoint";
   };
 
   # Set your time zone.
@@ -65,22 +64,26 @@
     LC_TELEPHONE = "ja_JP.UTF-8";
     LC_TIME = "en_US.UTF-8";
   };
-  
+
   i18n.inputMethod = {
     enable = true;
     type = "fcitx5";
-    fcitx5.addons = with pkgs; [fcitx5-mozc fcitx5-skk fcitx5-gtk libsForQt5.fcitx5-qt];
+    fcitx5.addons = with pkgs; [
+      fcitx5-mozc
+      fcitx5-skk
+      fcitx5-gtk
+      libsForQt5.fcitx5-qt
+    ];
   };
   fonts.packages = with pkgs; [
-  	ipafont
-  	noto-fonts
-	noto-fonts-cjk-sans
-	noto-fonts-emoji
-        jetbrains-mono
+    ipafont
+    noto-fonts
+    noto-fonts-cjk-sans
+    noto-fonts-emoji
+    jetbrains-mono
   ];
 
-
-  environment.pathsToLink = ["/libexec"];
+  environment.pathsToLink = [ "/libexec" ];
 
   # Configure keymap in X11
   services.xserver = {
@@ -91,22 +94,22 @@
       layout = "us";
     };
     desktopManager = {
-	xterm.enable = false;
+      xterm.enable = false;
     };
-   windowManager.i3 = {
-  	enable = true;
-    	extraPackages = with pkgs;[
-  	    rofi
+    windowManager.i3 = {
+      enable = true;
+      extraPackages = with pkgs; [
+        rofi
         polybar
-	      i3lock
-	    ];
+        i3lock
+      ];
     };
   };
 
   services.displayManager = {
     defaultSession = "none+i3";
   };
- 
+
   services.libinput = {
     enable = true;
     touchpad.disableWhileTyping = true;
@@ -120,12 +123,18 @@
     isNormalUser = true;
     description = "kashu";
     shell = pkgs.zsh;
-    extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker"];
-    packages = with pkgs; [];
+    extraGroups = [
+      "networkmanager"
+      "wheel"
+      "audio"
+      "video"
+      "docker"
+    ];
+    packages = with pkgs; [ ];
   };
   nix.settings.allowed-users = [ "kashu"];
 
-    # Allow unfree packages
+  # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
   programs.zsh.enable = true;
@@ -149,7 +158,7 @@
 
   # Docker
   virtualisation.docker.enable = true;
- 
+
   # nix storag optimization
   nix.gc = {
     automatic = true;
@@ -168,7 +177,7 @@
   # List services that you want to enable:
 
   # Enable the OpenSSH daemon.
-   services.openssh.enable = true;
+  services.openssh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
@@ -176,7 +185,10 @@
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
