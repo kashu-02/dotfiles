@@ -116,14 +116,6 @@
   console.keyMap = "us";
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  # users.users.shun = {
-  #   isNormalUser = true;
-  #   description = "shun";
-  #   shell = pkgs.zsh;
-  #   extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker"];
-  #   packages = with pkgs; [];
-  # };
-  
   users.users.kashu = {
     isNormalUser = true;
     description = "kashu";
@@ -131,7 +123,7 @@
     extraGroups = [ "networkmanager" "wheel" "audio" "video" "docker"];
     packages = with pkgs; [];
   };
-  nix.settings.allowed-users = [ "shun" "kashu"];
+  nix.settings.allowed-users = [ "kashu"];
 
     # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
@@ -155,11 +147,6 @@
   # Nix-ld
   programs.nix-ld.enable = true;
 
-  # Cloudflare-WARP
-  services.cloudflare-warp = {
-    enable = true;
-  };
-
   # Docker
   virtualisation.docker.enable = true;
  
@@ -169,6 +156,7 @@
     dates = "weekly";
     options = "--delete-older-than 90d";
   };
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
