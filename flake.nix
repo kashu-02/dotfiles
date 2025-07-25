@@ -132,6 +132,38 @@
           ];
         };
 
+      nixosConfigurations.nixos-desktop =
+        let
+          username = "kashu";
+          specialArgs = {
+            inherit username;
+          };
+          system = "x86_64-linux";
+          unstable-overlays = {
+            nixpkgs.overlays = [
+              (final: prev: {
+                unstable = import nixpkgs-unstable {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+              })
+            ];
+          };
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          modules = [
+            ./hosts/nixos-desktop/nixos-desktop-configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./users/nixos-desktop.nix;
+            }
+            unstable-overlays
+          ];
+        };
+
       darwinConfigurations.Shunsukes-MacBook-Air =
         let
           username = "shun";
