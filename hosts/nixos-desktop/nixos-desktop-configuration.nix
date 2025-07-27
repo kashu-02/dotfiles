@@ -91,6 +91,7 @@
     extraGroups = [
       "networkmanager"
       "wheel"
+      "docker"
     ];
     packages = with pkgs; [ ];
     shell = pkgs.zsh;
@@ -143,6 +144,11 @@
   # };
 
   # List services that you want to enable:
+
+  services.ollama = {
+    enable = true;
+    host = "0.0.0.0";
+  };
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
