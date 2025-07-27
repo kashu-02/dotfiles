@@ -48,7 +48,7 @@
       "GDK_SCALE,2"
       "XCURSOR_SIZE,64"
     ];
-    input.natural_scroll = true;
+    input.natural_scroll = false;
   };
 
   home.sessionVariables.NIXOS_OZONE_WL = 1;
