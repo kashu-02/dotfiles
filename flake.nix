@@ -63,6 +63,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/dev-nix-home.nix;
+              home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
           ];
@@ -95,6 +96,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/lab-pc-home.nix;
+              home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
           ];
@@ -127,6 +129,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/l390-laptop.nix;
+              home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
           ];
@@ -160,6 +163,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/mac-thinclient.nix;
+              home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
           ];
