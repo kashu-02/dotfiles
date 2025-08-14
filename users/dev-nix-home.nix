@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./packages/common.nix
     ./packages/common-linux.nix
   ];
 
