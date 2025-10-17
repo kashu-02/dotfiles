@@ -15,6 +15,17 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprland = {
+      url = "github:hyprwm/Hyprland";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    rose-pine-hyprcursor = {
+      url = "github:ndom91/rose-pine-hyprcursor";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprlang.follows = "hyprland/hyprlang";
+    };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -26,10 +37,11 @@
       self,
       nixpkgs,
       nixpkgs-unstable,
-      nix-darwin,
-      home-manager,
-      treefmt-nix,
       systems,
+      treefmt-nix,
+      home-manager,
+      nix-darwin,
+      ...
     }:
     let
       eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
@@ -140,6 +152,7 @@
           username = "kashu";
           specialArgs = {
             inherit username;
+            inherit inputs;
           };
           system = "x86_64-linux";
           unstable-overlays = {
