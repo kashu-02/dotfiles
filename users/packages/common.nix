@@ -11,6 +11,7 @@
     ./nvim.nix
     ./zsh.nix
     ./tmux.nix
+    ./direnv.nix
   ];
 
   # The home.packages option allows you to install Nix packages into your
@@ -28,5 +29,6 @@
     ++ (with pkgs.unstable; [
       gemini-cli
       claude-code
+      codex
     ]);
 }
