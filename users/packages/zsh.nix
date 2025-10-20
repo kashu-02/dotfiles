@@ -6,7 +6,7 @@
       la = "ls -alh";
       ll = "ls -lh";
     };
-    initContent = ''
+    initExtra = ''
       fastfetch
     '';
     autosuggestion.enable = true;
