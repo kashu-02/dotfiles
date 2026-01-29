@@ -132,7 +132,7 @@
     ];
     packages = with pkgs; [ ];
   };
-  nix.settings.allowed-users = [ "kashu"];
+  nix.settings.allowed-users = [ "kashu" ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
