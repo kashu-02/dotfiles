@@ -16,8 +16,12 @@
     };
 
     hyprland = {
-      url = "github:hyprwm/Hyprland";
+      url = "github:hyprwm/hyprland/v0.52.2";
       inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprpaper = {
+      url = "github:hyprwm/hyprpaper";
     };
 
     rose-pine-hyprcursor = {
@@ -168,6 +172,7 @@
         in
         nixpkgs.lib.nixosSystem {
           inherit system;
+          specialArgs = { inherit inputs; };
           modules = [
             ./hosts/nixos-desktop/nixos-desktop-configuration.nix
             home-manager.nixosModules.home-manager
@@ -175,6 +180,7 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/nixos-desktop.nix;
+              home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
           ];

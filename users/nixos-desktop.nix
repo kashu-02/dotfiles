@@ -5,7 +5,7 @@
     ./packages/common.nix
     ./packages/common-linux.nix
     ./packages/linux-desktop.nix
-    ./packages/hyprland.nix
+    ./packages/hyprland/hyprland.nix
   ];
 
   # Home Manager needs a bit of information about you and the paths it should

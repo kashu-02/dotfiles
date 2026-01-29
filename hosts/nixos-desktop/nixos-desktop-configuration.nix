@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
   imports = [
@@ -13,6 +13,14 @@
   # Bootloader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+
+  boot.initrd.systemd.enable = true;
+  boot.kernelParams = [
+    "zswap.enabled=1" # enables zswap
+    "zswap.compressor=lz4" # compression algorithm
+    "zswap.max_pool_percent=20" # maximum percentage of RAM that zswap is allowed to use
+    "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
+  ];
 
   networking.hostName = "nixos-desktop"; # Define your hostname.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
@@ -68,7 +76,7 @@
   fonts.packages = with pkgs; [
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
   ];
 
   # Configure keymap in X11
@@ -79,7 +87,12 @@
 
   programs.hyprland = {
     enable = true;
-    withUWSM = true;
+    # set the flake package
+    package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+    # make sure to also set the portal package, so that they are in sync
+    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    withUWSM  = true;
+    xwayland.enable = true;
   };
 
   programs.zsh.enable = true;
@@ -105,7 +118,12 @@
   environment.systemPackages = with pkgs; [
     vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
     wget
-    inputs.rose-pine-hyprcursor.packages.${pkgs.system}.default
+  ];
+
+  # Required for Home Manager with useUserPackages and xdg-desktop-portal
+  environment.pathsToLink = [
+    "/share/applications"
+    "/share/xdg-desktop-portal"
   ];
 
   # Flakes
@@ -155,6 +173,7 @@
   services.openssh = {
     enable = true;
     permitRootLogin = "no";
+    passwordAuthentication = false;
     ports = [ 56756 ];
   };
 

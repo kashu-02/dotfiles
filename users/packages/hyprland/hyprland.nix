@@ -1,15 +1,27 @@
-{ inputs, pkgs, ... }:
+{ inputs, pkgs, config, lib, ... }:
 
 {
   imports = [
     ./waybar.nix
   ];
 
+  home.packages = [
+    inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+  ];
+
+  programs.kitty.enable = true;
+
   wayland.windowManager.hyprland = {
     enable = true;
-    package = inputs.hyprland.packages.${pkgs.system.hostPlatform.system}.hyprland;
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    systemd.enable = false;
   };
+
+  programs.zsh.loginExtra = lib.mkAfter ''
+    if uwsm check may-start && uwsm select; then
+      exec uwsm start default
+    fi
+  '';
+
 
   wayland.windowManager.hyprland.settings = {
     "$term" = "wezterm";
@@ -18,7 +30,7 @@
     exec-once = [
       "fcitx5 -d"
       "[workspace 9 silent] thunderbird"
-      "[workspace 8 silent] discord"
+      "[workspace 8 silent] discord --start-minimized"
       "[workspace 7 silent] slack"
       "jetbrains-toolbox"
     ];
@@ -26,7 +38,7 @@
       [
         "$mod, RETURN, exec, $term"
         "$mod, G, exec, google-chrome-stable"
-        ", Print, exec, grimblast copy area"
+        "$mod SHIFT, F4, exec, grimblast copy area"
         "$mod, D, exec, rofi -show combi"
         "$mod SHIFT, Q, killactive"
       ]
@@ -46,6 +58,11 @@
           ) 9
         )
       );
+
+    animation = [
+      "workspaces, 0, 0, default"
+    ];
+
     monitor = "DP-1, 3840x2160@60, 0x0, 1.2";
     xwayland.force_zero_scaling = true;
     env = [
@@ -68,6 +85,16 @@
         corner_radius = 10;
         font = "Noto Sans CJK JP";
       };
+    };
+  };
+  
+  services.hyprpaper = {
+    enable = true;
+    package = inputs.hyprpaper.packages.${pkgs.stdenv.hostPlatform.system}.default;
+    settings = {
+      wallpapers = [
+         "DP-1,/home/${config.home.username}/.wallpapers/wallpaper"
+      ];
     };
   };
 }
