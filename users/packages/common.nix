@@ -25,6 +25,8 @@
       kubectl
       kubernetes-helm
       peco
+      nmap
+      ripgrep
     ])
     ++ (with pkgs.unstable; [
       gemini-cli
