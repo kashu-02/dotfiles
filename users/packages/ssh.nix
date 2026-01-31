@@ -2,8 +2,11 @@
 {
   programs.ssh = {
     enable = true;
-    compression = true;
-    serverAliveInterval = 10;
+    enableDefaultConfig = false;
+    matchBlocks."*" = {
+      compression = true;
+      serverAliveInterval = 10;
+    };
     matchBlocks."github.com" = {
       hostname = "github.com";
       identitiesOnly = true;

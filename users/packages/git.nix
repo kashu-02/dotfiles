@@ -3,15 +3,17 @@
 {
   programs.git = {
     enable = true;
-    userName = "kashu-02";
-    userEmail = "64694079+kashu-02@users.noreply.github.com";
-    aliases = {
-      sw = "switch";
-      cm = "commit -m";
-      cc = "commit --amend";
-      st = "status -uno";
-      pu = "push origin";
-      pl = "pull origin";
+    settings = {
+      user.name = "kashu-02";
+      user.email = "64694079+kashu-02@users.noreply.github.com";
+      alias = {
+        sw = "switch";
+        cm = "commit -m";
+        cc = "commit --amend";
+        st = "status -uno";
+        pu = "push origin";
+        pl = "pull origin";
+      };
     };
     ignores = [
       ".idea/"

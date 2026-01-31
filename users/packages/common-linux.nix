@@ -6,7 +6,6 @@
 {
   imports = [
     ./ssh.nix
-    ./direnv.nix
     ./gpg.nix
   ];
 }

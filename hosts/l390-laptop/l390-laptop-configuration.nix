@@ -79,7 +79,7 @@
     ipafont
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-emoji
+    noto-fonts-color-emoji
     jetbrains-mono
   ];
 
@@ -98,6 +98,9 @@
     };
     windowManager.i3 = {
       enable = true;
+      extraSessionCommands = ''
+        xinput --set-prop 10 'libinput Accel Speed' 0.3
+      '';
       extraPackages = with pkgs; [
         rofi
         polybar
@@ -132,7 +135,7 @@
     ];
     packages = with pkgs; [ ];
   };
-  nix.settings.allowed-users = [ "kashu"];
+  nix.settings.allowed-users = [ "kashu" ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
