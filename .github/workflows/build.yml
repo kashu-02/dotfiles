@@ -28,6 +28,12 @@ jobs:
               status: 'completed',
             });
 
+            // Debug: show all workflow runs for this SHA
+            console.log('Available workflow runs:');
+            for (const run of runs.data.workflow_runs) {
+              console.log(`  - ${run.name}: ${run.conclusion}`);
+            }
+
             for (const name of requiredWorkflows) {
               const run = runs.data.workflow_runs.find(r => r.name === name);
               if (!run || run.conclusion !== 'success') {
