@@ -1,4 +1,4 @@
-name: "Format Check"
+name: "Format"
 
 on:
   pull_request:
@@ -7,13 +7,10 @@ on:
       - main
 
 jobs:
-  treefmt:
+  fmt-check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-
       - uses: DeterminateSystems/determinate-nix-action@v3
-
       - name: Check formatting
-        run: |
-          nix fmt -- --fail-on-change
+        run: nix fmt -- --fail-on-change
