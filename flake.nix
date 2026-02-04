@@ -19,6 +19,8 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
@@ -29,13 +31,15 @@
       home-manager,
       treefmt-nix,
       systems,
+      ...
     }:
     let
       eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
       treefmtEval = eachSystem (pkgs: treefmt-nix.lib.evalModule pkgs ./treefmt.nix);
     in
     {
-      nixosConfigurations.dev-nix =
+      nixosConfigurations = {
+        dev-nix =
         let
           username = "kashu";
           system = "x86_64-linux";
@@ -56,16 +60,18 @@
             ./hosts/dev-nix/dev-nix-configuration.nix
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./users/dev-nix-home.nix;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username} = import ./users/dev-nix-home.nix;
+                extraSpecialArgs = { inherit inputs; };
+              };
             }
             unstable-overlays
           ];
         };
 
-      nixosConfigurations.kashu-lab-nixos =
+        kashu-lab-nixos =
         let
           username = "kashu";
           system = "x86_64-linux";
@@ -86,16 +92,18 @@
             ./hosts/lab-pc/kashu-lab-nixos-configuration.nix
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./users/lab-pc-home.nix;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username} = import ./users/lab-pc-home.nix;
+                extraSpecialArgs = { inherit inputs; };
+              };
             }
             unstable-overlays
           ];
         };
 
-      nixosConfigurations.l390-laptop =
+        l390-laptop =
         let
           username = "kashu";
           system = "x86_64-linux";
@@ -116,14 +124,17 @@
             ./hosts/l390-laptop/l390-laptop-configuration.nix
             home-manager.nixosModules.home-manager
             {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./users/l390-laptop.nix;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username} = import ./users/l390-laptop.nix;
+                extraSpecialArgs = { inherit inputs; };
+              };
             }
             unstable-overlays
           ];
         };
+      };
 
       darwinConfigurations.Shunsukes-MacBook-Air =
         let
@@ -147,10 +158,12 @@
             home-manager.darwinModules.home-manager
             {
               users.users.shun.home = "/Users/shun";
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./users/mac-thinclient.nix;
-              home-manager.extraSpecialArgs = { inherit inputs; };
+              home-manager = {
+                useGlobalPkgs = true;
+                useUserPackages = true;
+                users.${username} = import ./users/mac-thinclient.nix;
+                extraSpecialArgs = { inherit inputs; };
+              };
             }
             unstable-overlays
           ];
