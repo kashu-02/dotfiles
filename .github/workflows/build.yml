@@ -40,9 +40,11 @@ jobs:
               const run = runs.data.workflow_runs.find(r => r.name === name);
               if (!run || run.conclusion !== 'success') {
                 core.notice(`${name}: ${run ? run.conclusion : 'not found'}`);
+                console.log(`Required workflow "${name}" did not succeed.`);
                 return 'false';
               }
             }
+            console.log('All required workflows succeeded.');
             return 'true';
 
   build-nixos:
