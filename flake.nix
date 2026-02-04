@@ -23,7 +23,6 @@
 
   outputs =
     inputs@{
-      self,
       nixpkgs,
       nixpkgs-unstable,
       nix-darwin,
@@ -39,13 +38,10 @@
       nixosConfigurations.dev-nix =
         let
           username = "kashu";
-          specialArgs = {
-            inherit username;
-          };
           system = "x86_64-linux";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
@@ -72,13 +68,10 @@
       nixosConfigurations.kashu-lab-nixos =
         let
           username = "kashu";
-          specialArgs = {
-            inherit username;
-          };
           system = "x86_64-linux";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
@@ -105,13 +98,10 @@
       nixosConfigurations.l390-laptop =
         let
           username = "kashu";
-          specialArgs = {
-            inherit username;
-          };
           system = "x86_64-linux";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
@@ -138,13 +128,10 @@
       darwinConfigurations.Shunsukes-MacBook-Air =
         let
           username = "shun";
-          specialArgs = {
-            inherit username;
-          };
           system = "aarch64-darwin";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
