@@ -1,0 +1,4 @@
+# within statix.toml
+disabled = [
+	"repeated_keys"
+]
