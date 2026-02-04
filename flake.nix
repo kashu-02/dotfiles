@@ -25,6 +25,7 @@
 
   outputs =
     inputs@{
+      # deadnix: skip
       self,
       nixpkgs,
       nixpkgs-unstable,
