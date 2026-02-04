@@ -19,10 +19,13 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
     inputs@{
+      self,
       nixpkgs,
       nixpkgs-unstable,
       nix-darwin,
@@ -156,6 +159,6 @@
           ];
         };
 
-      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+      formatter = eachSystem (pkgs: treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper);
     };
 }
