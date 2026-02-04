@@ -14,116 +14,91 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  networking = {
-    hostName = "kashu-lab-nixos"; # Define your hostname.
-    # wireless.enable = true;  # Enables wireless support via wpa_supplicant.
+  networking.hostName = "kashu-lab-nixos"; # Define your hostname.
+  # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
 
-    # Configure network proxy if necessary
-    # proxy.default = "http://user:password@proxy:port/";
-    # proxy.noProxy = "127.0.0.1,localhost,internal.domain";
+  # Configure network proxy if necessary
+  # networking.proxy.default = "http://user:password@proxy:port/";
+  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
-    # Enable networking
-    networkmanager.enable = false;
+  # Enable networking
+  networking.networkmanager.enable = false;
 
-    interfaces.enp1s0 = {
-      ipv4.addresses = [
-        {
-          address = "192.168.50.100";
-          prefixLength = 24;
-        }
-      ];
-    };
-    defaultGateway = {
-      address = "192.168.50.1";
-    };
-    nameservers = [ "192.168.50.1" ];
-
-    # Open ports in the firewall.
-    # firewall.allowedTCPPorts = [ ... ];
-    # firewall.allowedUDPPorts = [ ... ];
-    # Or disable the firewall altogether.
-    firewall.enable = false;
+  networking.interfaces.enp1s0 = {
+    ipv4.addresses = [
+      {
+        address = "192.168.50.100";
+        prefixLength = 24;
+      }
+    ];
   };
+  networking.defaultGateway = {
+    address = "192.168.50.1";
+  };
+  networking.nameservers = [ "192.168.50.1" ];
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
   time.hardwareClockInLocalTime = true;
 
   # Select internationalisation properties.
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
-    extraLocaleSettings = {
-      LC_ADDRESS = "ja_JP.UTF-8";
-      LC_IDENTIFICATION = "ja_JP.UTF-8";
-      LC_MEASUREMENT = "ja_JP.UTF-8";
-      LC_MONETARY = "ja_JP.UTF-8";
-      LC_NAME = "ja_JP.UTF-8";
-      LC_NUMERIC = "ja_JP.UTF-8";
-      LC_PAPER = "ja_JP.UTF-8";
-      LC_TELEPHONE = "ja_JP.UTF-8";
-      LC_TIME = "ja_JP.UTF-8";
-    };
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "ja_JP.UTF-8";
+    LC_IDENTIFICATION = "ja_JP.UTF-8";
+    LC_MEASUREMENT = "ja_JP.UTF-8";
+    LC_MONETARY = "ja_JP.UTF-8";
+    LC_NAME = "ja_JP.UTF-8";
+    LC_NUMERIC = "ja_JP.UTF-8";
+    LC_PAPER = "ja_JP.UTF-8";
+    LC_TELEPHONE = "ja_JP.UTF-8";
+    LC_TIME = "ja_JP.UTF-8";
+  };
 
-    # IME
-    inputMethod = {
-      enabled = "fcitx5";
-      fcitx5.addons = with pkgs; [
-        fcitx5-mozc
-        fcitx5-gtk
-      ];
-    };
+  # IME
+  i18n.inputMethod = {
+    enabled = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-mozc
+      fcitx5-gtk
+    ];
   };
 
   fonts.packages = with pkgs; [
     ipafont
     noto-fonts
     noto-fonts-cjk-sans
-    noto-fonts-color-emoji
+    noto-fonts-emoji
   ];
 
   # Configure keymap in X11
-  services = {
-    xserver = {
-      enable = true;
-      layout = "us";
-      xkbVariant = "";
-      xkbOptions = "ctrl:nocaps, ";
-      dpi = 130;
-      libinput.mouse.accelSpeed = "0.8";
-      desktopManager = {
-        xterm.enable = false;
-      };
-      displayManager = {
-        defaultSession = "none+i3";
-      };
-      windowManager.i3 = {
-        enable = true;
-        extraPackages = with pkgs; [
-          rofi
-          polybar
-          i3lock
-        ];
-      };
+  services.xserver = {
+    enable = true;
+    layout = "us";
+    xkbVariant = "";
+    xkbOptions = "ctrl:nocaps, ";
+    dpi = 130;
+    libinput.mouse.accelSpeed = "0.8";
+    desktopManager = {
+      xterm.enable = false;
     };
-
-    printing.enable = true;
-
-    # Enable the OpenSSH daemon.
-    openssh = {
-      enable = true;
-      ports = [ 56755 ];
-      settings = {
-        PermitRootLogin = "no";
-        PasswordAuthentication = false;
-        X11Forwarding = true;
-      };
+    displayManager = {
+      defaultSession = "none+i3";
     };
-
-    ollama.enable = true;
+    windowManager.i3 = {
+      enable = true;
+      extraPackages = with pkgs; [
+        rofi
+        polybar
+        i3lock
+      ];
+    };
   };
 
-  # Define a user account. Don't forget to set a password with 'passwd'.
+  environment.pathsToLink = [ "/libexec" ];
+
+  # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users.kashu = {
     isNormalUser = true;
     description = "kashu";
@@ -144,35 +119,25 @@
     gid = 1000;
   };
 
-  # Shell settings and programs
-  programs = {
-    zsh.enable = true;
-    # Nix-ld for such as VSCode
-    nix-ld.enable = true;
-    # libvirt
-    virt-manager.enable = true;
-  };
+  # Shell settings
+  programs.zsh.enable = true;
+  environment.shells = with pkgs; [ zsh ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  environment = {
-    pathsToLink = [ "/libexec" ];
-    shells = with pkgs; [ zsh ];
-
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
-    systemPackages = with pkgs; [
-      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-      wget
-      wezterm
-      openssl
-      zip
-      unzip
-      traceroute
-      dig
-    ];
-  };
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    wget
+    wezterm
+    openssl
+    zip
+    unzip
+    traceroute
+    dig
+  ];
 
   # Flakes
   nix.settings.experimental-features = [
@@ -180,11 +145,15 @@
     "flakes"
   ];
 
+  # Nix-ld for such as VSCode
+  programs.nix-ld.enable = true;
+
   # Docker
   virtualisation.docker.enable = true;
 
   # libvirt
   virtualisation.libvirtd.enable = true;
+  programs.virt-manager.enable = true;
 
   # Nix Storage Optimization
   nix.gc = {
@@ -198,6 +167,8 @@
     fsType = "nfs4";
   };
 
+  services.printing.enable = true;
+
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
   # programs.mtr.enable = true;
@@ -205,6 +176,27 @@
   #   enable = true;
   #   enableSSHSupport = true;
   # };
+
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  services.openssh = {
+    enable = true;
+    ports = [ 56755 ];
+    settings = {
+      PermitRootLogin = "no";
+      PasswordAuthentication = false;
+      X11Forwarding = true;
+    };
+  };
+
+  services.ollama.enable = true;
+
+  # Open ports in the firewall.
+  # networking.firewall.allowedTCPPorts = [ ... ];
+  # networking.firewall.allowedUDPPorts = [ ... ];
+  # Or disable the firewall altogether.
+  networking.firewall.enable = false;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions

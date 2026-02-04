@@ -11,13 +11,9 @@
   ];
 
   # Bootloader.
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi = {
-      canTouchEfiVariables = true;
-      efiSysMountPoint = "/boot/efi";
-    };
-  };
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.efi.efiSysMountPoint = "/boot/efi";
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -32,18 +28,14 @@
       # wifi.backend = "iwd";
     };
   };
-
-  programs = {
-    nm-applet.enable = true;
-    # Brightness
-    light.enable = true;
-    zsh.enable = true;
-    # Nix-ld
-    nix-ld.enable = true;
-  };
+  programs.nm-applet.enable = true;
 
   # Bluetooth Settings
   hardware.bluetooth.enable = true;
+  services.blueman.enable = true;
+
+  # Brightness
+  programs.light.enable = true;
 
   # Input devices
   hardware.trackpoint = {
@@ -59,31 +51,29 @@
   time.hardwareClockInLocalTime = true;
 
   # Select internationalisation properties.
-  i18n = {
-    defaultLocale = "en_US.UTF-8";
+  i18n.defaultLocale = "en_US.UTF-8";
 
-    extraLocaleSettings = {
-      LC_ADDRESS = "ja_JP.UTF-8";
-      LC_IDENTIFICATION = "ja_JP.UTF-8";
-      LC_MEASUREMENT = "ja_JP.UTF-8";
-      LC_MONETARY = "ja_JP.UTF-8";
-      LC_NAME = "ja_JP.UTF-8";
-      LC_NUMERIC = "ja_JP.UTF-8";
-      LC_PAPER = "ja_JP.UTF-8";
-      LC_TELEPHONE = "ja_JP.UTF-8";
-      LC_TIME = "en_US.UTF-8";
-    };
+  i18n.extraLocaleSettings = {
+    LC_ADDRESS = "ja_JP.UTF-8";
+    LC_IDENTIFICATION = "ja_JP.UTF-8";
+    LC_MEASUREMENT = "ja_JP.UTF-8";
+    LC_MONETARY = "ja_JP.UTF-8";
+    LC_NAME = "ja_JP.UTF-8";
+    LC_NUMERIC = "ja_JP.UTF-8";
+    LC_PAPER = "ja_JP.UTF-8";
+    LC_TELEPHONE = "ja_JP.UTF-8";
+    LC_TIME = "en_US.UTF-8";
+  };
 
-    inputMethod = {
-      enable = true;
-      type = "fcitx5";
-      fcitx5.addons = with pkgs; [
-        fcitx5-mozc
-        fcitx5-skk
-        fcitx5-gtk
-        libsForQt5.fcitx5-qt
-      ];
-    };
+  i18n.inputMethod = {
+    enable = true;
+    type = "fcitx5";
+    fcitx5.addons = with pkgs; [
+      fcitx5-mozc
+      fcitx5-skk
+      fcitx5-gtk
+      libsForQt5.fcitx5-qt
+    ];
   };
   fonts.packages = with pkgs; [
     ipafont
@@ -93,44 +83,39 @@
     jetbrains-mono
   ];
 
+  environment.pathsToLink = [ "/libexec" ];
+
   # Configure keymap in X11
-  services = {
-    blueman.enable = true;
-
-    xserver = {
+  services.xserver = {
+    enable = true;
+    xkb = {
+      variant = "";
+      options = "ctrl:nocaps";
+      layout = "us";
+    };
+    desktopManager = {
+      xterm.enable = false;
+    };
+    windowManager.i3 = {
       enable = true;
-      xkb = {
-        variant = "";
-        options = "ctrl:nocaps";
-        layout = "us";
-      };
-      desktopManager = {
-        xterm.enable = false;
-      };
-      windowManager.i3 = {
-        enable = true;
-        extraSessionCommands = ''
-          xinput --set-prop 10 'libinput Accel Speed' 0.3
-        '';
-        extraPackages = with pkgs; [
-          rofi
-          polybar
-          i3lock
-        ];
-      };
+      extraSessionCommands = ''
+        xinput --set-prop 10 'libinput Accel Speed' 0.3
+      '';
+      extraPackages = with pkgs; [
+        rofi
+        polybar
+        i3lock
+      ];
     };
+  };
 
-    displayManager = {
-      defaultSession = "none+i3";
-    };
+  services.displayManager = {
+    defaultSession = "none+i3";
+  };
 
-    libinput = {
-      enable = true;
-      touchpad.disableWhileTyping = true;
-    };
-
-    # Enable the OpenSSH daemon.
-    openssh.enable = true;
+  services.libinput = {
+    enable = true;
+    touchpad.disableWhileTyping = true;
   };
 
   # Configure console keymap
@@ -150,30 +135,39 @@
     ];
     packages = with pkgs; [ ];
   };
+  nix.settings.allowed-users = [ "kashu" ];
 
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
-  environment = {
-    pathsToLink = [ "/libexec" ];
-    shells = with pkgs; [ zsh ];
+  programs.zsh.enable = true;
+  environment.shells = with pkgs; [ zsh ];
 
-    # List packages installed in system profile. To search, run:
-    # $ nix search wget
-    systemPackages = with pkgs; [
-      vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
-      emacs
-      wget
-      openssl
-      zip
-      unzip
-      traceroute
-      dig
-    ];
-  };
+  # List packages installed in system profile. To search, run:
+  # $ nix search wget
+  environment.systemPackages = with pkgs; [
+    vim # Do not forget to add an editor to edit configuration.nix! The Nano editor is also installed by default.
+    emacs
+    wget
+    openssl
+    zip
+    unzip
+    traceroute
+    dig
+  ];
+
+  # Nix-ld
+  programs.nix-ld.enable = true;
 
   # Docker
   virtualisation.docker.enable = true;
+
+  # nix storag optimization
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 90d";
+  };
 
   # Some programs need SUID wrappers, can be configured further or are
   # started in user sessions.
@@ -183,27 +177,21 @@
   #   enableSSHSupport = true;
   # };
 
+  # List services that you want to enable:
+
+  # Enable the OpenSSH daemon.
+  services.openssh.enable = true;
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 
-  # nix storag optimization and settings
-  nix = {
-    settings = {
-      allowed-users = [ "kashu" ];
-      experimental-features = [
-        "nix-command"
-        "flakes"
-      ];
-    };
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 90d";
-    };
-  };
+  nix.settings.experimental-features = [
+    "nix-command"
+    "flakes"
+  ];
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
