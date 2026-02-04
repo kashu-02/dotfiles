@@ -5,6 +5,8 @@ on:
     workflows: ["Lint", "Format", "Flake Check"]
     types:
       - completed
+  workflow_dispatch:
+    
 
 jobs:
   check-all-workflows:
