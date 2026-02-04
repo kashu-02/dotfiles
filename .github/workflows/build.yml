@@ -5,14 +5,12 @@ on:
     workflows: ["Lint", "Format", "Flake Check"]
     types:
       - completed
-  workflow_dispatch:
-    
 
 jobs:
   check-all-workflows:
     runs-on: ubuntu-latest
     outputs:
-      should-build: ${{ steps.check.outputs.result }}
+      should-build: ${{ steps.check.outputs.should_build }}
     steps:
       - name: Check if all workflows succeeded
         id: check
@@ -41,11 +39,12 @@ jobs:
               if (!run || run.conclusion !== 'success') {
                 core.notice(`${name}: ${run ? run.conclusion : 'not found'}`);
                 console.log(`Required workflow "${name}" did not succeed.`);
-                return 'false';
+                core.setOutput('should_build', 'false');
+                return;
               }
             }
             console.log('All required workflows succeeded.');
-            return 'true';
+            core.setOutput('should_build', 'true');
 
   build-nixos:
     runs-on: ubuntu-latest
