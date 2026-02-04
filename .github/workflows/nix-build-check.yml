@@ -1,0 +1,48 @@
+name: "Nix Build Check"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  nix-build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - dev-nix
+          - kashu-lab-nixos
+          - l390-laptop
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Build NixOS configuration for ${{ matrix.config }}
+        run: |
+          nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --print-build-logs
+
+  nix-darwin-build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Build Darwin configuration
+        run: |
+          nix build .#darwinConfigurations.Shunsukes-MacBook-Air.system --print-build-logs
+
+  nix-flake-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: DeterminateSystems/determinate-nix-action@v3
+
+      - name: Check flake
+        run: |
+          nix flake check --print-build-logs
