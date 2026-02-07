@@ -10,6 +10,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mac-app-util.url = "github:hraban/mac-app-util";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,6 +32,7 @@
       nixpkgs,
       nixpkgs-unstable,
       nix-darwin,
+      mac-app-util,
       home-manager,
       treefmt-nix,
       systems,
@@ -148,12 +151,16 @@
           inherit system;
           modules = [
             ./hosts/macbookairm1
+            mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
             {
               users.users.shun.home = "/Users/shun";
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./users/mac-thinclient.nix;
+              home-manager.users.${username}.imports = [
+                ./users/mac-thinclient.nix
+                mac-app-util.homeManagerModules.default
+              ];
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
