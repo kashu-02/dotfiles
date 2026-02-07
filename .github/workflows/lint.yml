@@ -1,0 +1,24 @@
+name: "Lint"
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  statix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Run statix
+        run: nix run nixpkgs#statix -- check .
+
+  deadnix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Run deadnix
+        run: nix run nixpkgs#deadnix -- --fail .

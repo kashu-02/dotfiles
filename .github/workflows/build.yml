@@ -1,0 +1,78 @@
+name: "Build"
+
+on:
+  workflow_run:
+    workflows: ["Lint", "Format", "Flake Check"]
+    types:
+      - completed
+
+jobs:
+  check-all-workflows:
+    runs-on: ubuntu-latest
+    outputs:
+      should-build: ${{ steps.check.outputs.should_build }}
+    steps:
+      - name: Check if all workflows succeeded
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { owner, repo } = context.repo;
+            const sha = context.payload.workflow_run.head_sha;
+            const requiredWorkflows = ['Lint', 'Format', 'Flake Check'];
+
+            const runs = await github.rest.actions.listWorkflowRunsForRepo({
+              owner,
+              repo,
+              head_sha: sha,
+              status: 'completed',
+            });
+
+            // Debug: show all workflow runs for this SHA
+            console.log('Available workflow runs:');
+            for (const run of runs.data.workflow_runs) {
+              console.log(`  - ${run.name}: ${run.conclusion}`);
+            }
+
+            for (const name of requiredWorkflows) {
+              const run = runs.data.workflow_runs.find(r => r.name === name);
+              if (!run || run.conclusion !== 'success') {
+                core.notice(`${name}: ${run ? run.conclusion : 'not found'}`);
+                console.log(`Required workflow "${name}" did not succeed.`);
+                core.setOutput('should_build', 'false');
+                return;
+              }
+            }
+            console.log('All required workflows succeeded.');
+            core.setOutput('should_build', 'true');
+
+  build-nixos:
+    runs-on: ubuntu-latest
+    needs: check-all-workflows
+    if: needs.check-all-workflows.outputs.should-build == 'true'
+    strategy:
+      matrix:
+        config:
+          - dev-nix
+          - kashu-lab-nixos
+          - l390-laptop
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Build NixOS configuration for ${{ matrix.config }}
+        run: nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --print-build-logs
+
+  build-darwin:
+    runs-on: macos-latest
+    needs: check-all-workflows
+    if: needs.check-all-workflows.outputs.should-build == 'true'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Build Darwin configuration
+        run: nix build .#darwinConfigurations.Shunsukes-MacBook-Air.system --print-build-logs
