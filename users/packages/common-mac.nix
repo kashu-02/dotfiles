@@ -6,5 +6,6 @@
 }:
 {
   imports = [
+    ./wezterm.nix
   ];
 }
