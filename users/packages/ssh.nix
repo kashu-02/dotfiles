@@ -18,6 +18,12 @@ _: {
       port = 56754;
       user = "kashu";
     };
+    matchBlocks."desktop" = {
+      hostname = "home.kashu.dev";
+      identityFile = "~/.ssh/dev-nix";
+      port = 56756;
+      user = "kashu";
+    };
     matchBlocks."lab-pc" = {
       hostname = "192.168.50.100";
       identityFile = "~/.ssh/lab-pc";
