@@ -12,6 +12,12 @@ _: {
       identityFile = "~/.ssh/github";
       user = "git";
     };
+    matchBlocks."git.bgp.ne.jp" = {
+      hostname = "git.bgp.ne.jp";
+      identitiesOnly = true;
+      identityFile = "~/.ssh/github";
+      user = "git";
+    };
     matchBlocks."dev-nix" = {
       hostname = "home.kashu.dev";
       identityFile = "~/.ssh/dev-nix";
