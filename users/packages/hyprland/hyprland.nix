@@ -10,6 +10,10 @@
   ];
 
   programs.kitty.enable = true;
+  home.file.".local/bin/pick_wallpaper.sh" = {
+    source = ./pick_wallpaper.sh;
+    executable = true;
+  };
 
   wayland.windowManager.hyprland = {
     enable = true;
@@ -28,6 +32,7 @@
     "$mod" = "SUPER";
 
     exec-once = [
+      "${pkgs.bash}/bin/bash -lc '/home/${config.home.username}/.local/bin/pick_wallpaper.sh; while sleep 3600; do /home/${config.home.username}/.local/bin/pick_wallpaper.sh; done'"
       "fcitx5 -d"
       "[workspace 9 silent] thunderbird"
       "[workspace 8 silent] discord --start-minimized"
@@ -92,9 +97,11 @@
     enable = true;
     package = inputs.hyprpaper.packages.${pkgs.stdenv.hostPlatform.system}.default;
     settings = {
-      wallpapers = [
-         "DP-1,/home/${config.home.username}/.wallpapers/wallpaper"
-      ];
-    };
+      wallpaper = {
+          monitor = "DP-1";
+          path = "/home/${config.home.username}/.wallpapers/current_wallpaper";
+      };
+      ipc = true;
   };
+};
 }

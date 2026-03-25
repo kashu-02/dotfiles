@@ -20,6 +20,21 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    hyprland = {
+      url = "github:hyprwm/hyprland/v0.52.2";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprpaper = {
+      url = "github:hyprwm/hyprpaper";
+    };
+
+    rose-pine-hyprcursor = {
+      url = "github:ndom91/rose-pine-hyprcursor";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.hyprlang.follows = "hyprland/hyprlang";
+    };
+
     systems.url = "github:nix-systems/default";
   };
 
@@ -33,6 +48,7 @@
       home-manager,
       treefmt-nix,
       systems,
+      ...
     }:
     let
       eachSystem = f: nixpkgs.lib.genAttrs (import systems) (system: f nixpkgs.legacyPackages.${system});
@@ -123,6 +139,41 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.${username} = import ./users/l390-laptop.nix;
+              home-manager.extraSpecialArgs = { inherit inputs; };
+            }
+            unstable-overlays
+          ];
+        };
+
+       nixosConfigurations.nixos-desktop =
+        let
+          username = "kashu";
+          specialArgs = {
+            inherit username;
+            inherit inputs;
+          };
+          system = "x86_64-linux";
+          unstable-overlays = {
+            nixpkgs.overlays = [
+              (final: prev: {
+                unstable = import nixpkgs-unstable {
+                  inherit system;
+                  config.allowUnfree = true;
+                };
+              })
+            ];
+          };
+        in
+        nixpkgs.lib.nixosSystem {
+          inherit system;
+          specialArgs = { inherit inputs; };
+          modules = [
+            ./hosts/nixos-desktop/nixos-desktop-configuration.nix
+            home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.${username} = import ./users/nixos-desktop.nix;
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
