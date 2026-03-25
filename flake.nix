@@ -10,6 +10,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    mac-app-util.url = "github:hraban/mac-app-util";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -19,14 +21,18 @@
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    systems.url = "github:nix-systems/default";
   };
 
   outputs =
     inputs@{
+      # deadnix: skip
       self,
       nixpkgs,
       nixpkgs-unstable,
       nix-darwin,
+      mac-app-util,
       home-manager,
       treefmt-nix,
       systems,
@@ -39,13 +45,10 @@
       nixosConfigurations.dev-nix =
         let
           username = "kashu";
-          specialArgs = {
-            inherit username;
-          };
           system = "x86_64-linux";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
@@ -72,13 +75,10 @@
       nixosConfigurations.kashu-lab-nixos =
         let
           username = "kashu";
-          specialArgs = {
-            inherit username;
-          };
           system = "x86_64-linux";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
@@ -105,13 +105,10 @@
       nixosConfigurations.l390-laptop =
         let
           username = "kashu";
-          specialArgs = {
-            inherit username;
-          };
           system = "x86_64-linux";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
@@ -138,13 +135,10 @@
       darwinConfigurations.Shunsukes-MacBook-Air =
         let
           username = "shun";
-          specialArgs = {
-            inherit username;
-          };
           system = "aarch64-darwin";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
@@ -157,18 +151,22 @@
           inherit system;
           modules = [
             ./hosts/macbookairm1
+            mac-app-util.darwinModules.default
             home-manager.darwinModules.home-manager
             {
               users.users.shun.home = "/Users/shun";
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users.${username} = import ./users/mac-thinclient.nix;
+              home-manager.users.${username}.imports = [
+                ./users/mac-thinclient.nix
+                mac-app-util.homeManagerModules.default
+              ];
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
           ];
         };
 
-      formatter = eachSystem (pkgs: treefmtEval.${pkgs.system}.config.build.wrapper);
+      formatter = eachSystem (pkgs: treefmtEval.${pkgs.stdenv.hostPlatform.system}.config.build.wrapper);
     };
 }

@@ -1,0 +1,28 @@
+name: "Build"
+
+on:
+  workflow_call:
+
+jobs:
+  build-nixos:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        config:
+          - dev-nix
+          - kashu-lab-nixos
+          - l390-laptop
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Build NixOS configuration for ${{ matrix.config }}
+        run: nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --print-build-logs
+
+  build-darwin:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Build Darwin configuration
+        run: nix build .#darwinConfigurations.Shunsukes-MacBook-Air.system --print-build-logs

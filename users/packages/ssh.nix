@@ -1,5 +1,4 @@
-{ pkgs, ... }:
-{
+_: {
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
@@ -13,10 +12,22 @@
       identityFile = "~/.ssh/github";
       user = "git";
     };
+    matchBlocks."git.bgp.ne.jp" = {
+      hostname = "git.bgp.ne.jp";
+      identitiesOnly = true;
+      identityFile = "~/.ssh/github";
+      user = "git";
+    };
     matchBlocks."dev-nix" = {
       hostname = "home.kashu.dev";
       identityFile = "~/.ssh/dev-nix";
       port = 56754;
+      user = "kashu";
+    };
+    matchBlocks."desktop" = {
+      hostname = "home.kashu.dev";
+      identityFile = "~/.ssh/dev-nix";
+      port = 56756;
       user = "kashu";
     };
     matchBlocks."lab-pc" = {
