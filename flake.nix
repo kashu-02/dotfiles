@@ -148,14 +148,10 @@
       nixosConfigurations.nixos-desktop =
         let
           username = "kashu";
-          specialArgs = {
-            inherit username;
-            inherit inputs;
-          };
           system = "x86_64-linux";
           unstable-overlays = {
             nixpkgs.overlays = [
-              (final: prev: {
+              (_final: _prev: {
                 unstable = import nixpkgs-unstable {
                   inherit system;
                   config.allowUnfree = true;
