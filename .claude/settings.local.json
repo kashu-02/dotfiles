@@ -2,7 +2,10 @@
   "permissions": {
     "allow": [
       "Bash(nix fmt:*)",
-      "Bash(nix flake show:*)"
+      "Bash(nix flake show:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh api:*)",
+      "mcp__github__pull_request_read"
     ]
   }
 }

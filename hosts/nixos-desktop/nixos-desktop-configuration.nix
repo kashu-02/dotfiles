@@ -107,7 +107,6 @@
     isNormalUser = true;
     description = "kashu";
     extraGroups = [
-      "networkmanager"
       "wheel"
       "docker"
     ];

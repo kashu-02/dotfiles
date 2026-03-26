@@ -27,6 +27,8 @@
 
     hyprpaper = {
       url = "github:hyprwm/hyprpaper";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.systems.follows = "systems";
     };
 
     rose-pine-hyprcursor = {

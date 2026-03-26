@@ -32,4 +32,4 @@ else
 fi
 
 ln -sfn "${WALLPAPER}" "${WALL_LOC}"
-hyprctl hyprpaper wallpaper ', "'"${WALLPAPER}"'"'
+hyprctl hyprpaper wallpaper "*,${WALLPAPER}"

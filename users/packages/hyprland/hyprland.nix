@@ -13,6 +13,7 @@
 
   home.packages = [
     inputs.rose-pine-hyprcursor.packages.${pkgs.stdenv.hostPlatform.system}.default
+    pkgs.grimblast
   ];
 
   programs.kitty.enable = true;
