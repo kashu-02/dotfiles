@@ -1,4 +1,10 @@
-{ inputs, pkgs, config, lib, ... }:
+{
+  inputs,
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 {
   imports = [
@@ -26,7 +32,6 @@
     fi
   '';
 
-
   wayland.windowManager.hyprland.settings = {
     "$term" = "wezterm";
     "$mod" = "SUPER";
@@ -39,30 +44,29 @@
       "[workspace 7 silent] slack"
       "jetbrains-toolbox"
     ];
-    bind =
-      [
-        "$mod, RETURN, exec, $term"
-        "$mod, G, exec, google-chrome-stable"
-        "$mod SHIFT, F4, exec, grimblast copy area"
-        "$mod, D, exec, rofi -show combi"
-        "$mod SHIFT, Q, killactive"
-      ]
-      ++ (
-        # workspaces
-        # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
-        builtins.concatLists (
-          builtins.genList (
-            i:
-            let
-              ws = i + 1;
-            in
-            [
-              "$mod, code:1${toString i}, workspace, ${toString ws}"
-              "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
-            ]
-          ) 9
-        )
-      );
+    bind = [
+      "$mod, RETURN, exec, $term"
+      "$mod, G, exec, google-chrome-stable"
+      "$mod SHIFT, F4, exec, grimblast copy area"
+      "$mod, D, exec, rofi -show combi"
+      "$mod SHIFT, Q, killactive"
+    ]
+    ++ (
+      # workspaces
+      # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+      builtins.concatLists (
+        builtins.genList (
+          i:
+          let
+            ws = i + 1;
+          in
+          [
+            "$mod, code:1${toString i}, workspace, ${toString ws}"
+            "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+          ]
+        ) 9
+      )
+    );
 
     animation = [
       "workspaces, 0, 0, default"
@@ -92,16 +96,16 @@
       };
     };
   };
-  
+
   services.hyprpaper = {
     enable = true;
     package = inputs.hyprpaper.packages.${pkgs.stdenv.hostPlatform.system}.default;
     settings = {
       wallpaper = {
-          monitor = "DP-1";
-          path = "/home/${config.home.username}/.wallpapers/current_wallpaper";
+        monitor = "DP-1";
+        path = "/home/${config.home.username}/.wallpapers/current_wallpaper";
       };
       ipc = true;
+    };
   };
-};
 }

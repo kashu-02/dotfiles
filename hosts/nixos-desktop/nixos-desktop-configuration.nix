@@ -2,7 +2,12 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, inputs, ... }:
+{
+  config,
+  pkgs,
+  inputs,
+  ...
+}:
 
 {
   imports = [
@@ -53,7 +58,7 @@
   # Bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
-  services.blueman.enable = true ;
+  services.blueman.enable = true;
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
@@ -90,8 +95,9 @@
     # set the flake package
     package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     # make sure to also set the portal package, so that they are in sync
-    portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
-    withUWSM  = true;
+    portalPackage =
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+    withUWSM = true;
     xwayland.enable = true;
   };
 
@@ -163,11 +169,6 @@
   # };
 
   # List services that you want to enable:
-
-  services.ollama = {
-    enable = true;
-    host = "0.0.0.0";
-  };
 
   # Enable the OpenSSH daemon.
   services.openssh = {

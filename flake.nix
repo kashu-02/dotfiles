@@ -145,7 +145,7 @@
           ];
         };
 
-       nixosConfigurations.nixos-desktop =
+      nixosConfigurations.nixos-desktop =
         let
           username = "kashu";
           specialArgs = {
