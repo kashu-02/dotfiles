@@ -12,6 +12,7 @@ jobs:
           - dev-nix
           - kashu-lab-nixos
           - l390-laptop
+          - nixos-desktop
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
