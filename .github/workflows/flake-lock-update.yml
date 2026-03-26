@@ -3,7 +3,7 @@ name: "Flake.lock: update Nix dependencies"
 on:
   workflow_dispatch: # allows manual triggering
   schedule:
-    - cron: '0 0 * * *' # runs weekly on Sunday at 00:00
+    - cron: '0 0 * * 1' # runs weekly on Monday at 00:00 UTC
 
 jobs:
   nix-flake-update:
@@ -20,10 +20,12 @@ jobs:
         name: Update flake.lock
         uses: DeterminateSystems/update-flake-lock@main
         with:
+          token: ${{ secrets.PAT }}
           pr-title: "Auto Update Nix flake inputs" # Title of PR to be created
           pr-labels: |                  # Labels to be set on the PR
             dependencies
             automated
       - uses: peter-evans/enable-pull-request-automerge@v3
         with:
+          token: ${{ secrets.PAT }}
           pull-request-number: ${{ steps.update.outputs.pull-request-number }}
