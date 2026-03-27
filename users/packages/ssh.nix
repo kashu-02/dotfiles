@@ -49,6 +49,10 @@ _: {
       hostname = "192.168.11.250";
       identityFile = "~/.ssh/github";
     };
-
+    matchBlocks."containerlab" = {
+      hostname = "172.16.10.110";
+      identityFile = "~/.ssh/github";
+      user = "kashu";
+    };
   };
 }
