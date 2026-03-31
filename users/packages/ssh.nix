@@ -44,6 +44,7 @@ _: {
     matchBlocks."linsv" = {
       hostname = "linsv.u-aizu.ac.jp";
       user = "m5301034";
+      identityFile = "~/.ssh/u-aizu";
       proxyJump = "u-aizu";
     };
     matchBlocks."llmsv" = {
