@@ -39,7 +39,7 @@ _: {
     matchBlocks."u-aizu" = {
       hostname = "sshgate.u-aizu.ac.jp";
       identityFile = "~/.ssh/u-aizu";
-      user = "s1300071";
+      user = "m5301034";
     };
     matchBlocks."linsv" = {
       hostname = "linsv.u-aizu.ac.jp";
