@@ -43,6 +43,7 @@ _: {
     };
     matchBlocks."linsv" = {
       hostname = "linsv.u-aizu.ac.jp";
+      user = "m5301034";
       proxyJump = "u-aizu";
     };
     matchBlocks."llmsv" = {
