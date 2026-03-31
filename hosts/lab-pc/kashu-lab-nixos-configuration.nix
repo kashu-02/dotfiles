@@ -65,7 +65,8 @@
 
   # IME
   i18n.inputMethod = {
-    enabled = "fcitx5";
+    enable = true;
+    type = "fcitx5";
     fcitx5.addons = with pkgs; [
       fcitx5-mozc
       fcitx5-gtk
@@ -82,16 +83,12 @@
   # Configure keymap in X11
   services.xserver = {
     enable = true;
-    layout = "us";
-    xkbVariant = "";
-    xkbOptions = "ctrl:nocaps, ";
+    xkb.layout = "us";
+    xkb.variant = "";
+    xkb.options = "ctrl:nocaps, ";
     dpi = 130;
-    libinput.mouse.accelSpeed = "0.8";
     desktopManager = {
       xterm.enable = false;
-    };
-    displayManager = {
-      defaultSession = "none+i3";
     };
     windowManager.i3 = {
       enable = true;
@@ -102,6 +99,9 @@
       ];
     };
   };
+
+  services.libinput.mouse.accelSpeed = "0.8";
+  services.displayManager.defaultSession = "none+i3";
 
   environment.pathsToLink = [ "/libexec" ];
 
