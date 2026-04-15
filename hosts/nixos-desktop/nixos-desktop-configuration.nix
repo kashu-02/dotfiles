@@ -42,11 +42,23 @@
       id = 100;
       interface = "enp1s0";
     };
+    vlan110 = {
+      id = 110;
+      interface = "enp1s0";
+    };
   };
   networking.interfaces.vlan100 = {
     ipv4.addresses = [
       {
         address = "172.16.10.11";
+        prefixLength = 24;
+      }
+    ];
+  };
+  networking.interfaces.vlan110 = {
+    ipv4.addresses = [
+      {
+        address = "172.20.0.111";
         prefixLength = 24;
       }
     ];
@@ -109,6 +121,7 @@
     extraGroups = [
       "wheel"
       "docker"
+      "clab_admins"
     ];
     packages = with pkgs; [ ];
     shell = pkgs.zsh;

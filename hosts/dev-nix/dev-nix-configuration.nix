@@ -36,7 +36,7 @@
     ens19.ipv4 = {
       addresses = [
         {
-          address = "172.20.0.200";
+          address = "172.20.0.110";
           prefixLength = 24;
         }
       ];
@@ -50,8 +50,6 @@
 
   networking.nameservers = [
     "172.16.10.254"
-    "1.1.1.1"
-    "1.0.0.1"
   ];
 
   # Set your time zone.
