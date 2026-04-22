@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ pkgs, lib, config, ... }:
 
 {
   imports = [
@@ -117,6 +117,21 @@
           notification = false;
         }
       ];
+      keybindings =
+        let
+          modifier = config.xsession.windowManager.i3.config.modifier;
+        in
+        lib.mkOptionDefault {
+          #  "${modifier}+Return" = "exec i3-sensible-terminal";
+          #  "${modifier}+d"      = "exec dmenu_run";
+          #  "${modifier}+Shift+q" = "kill";
+          # Custom binding
+          "${modifier}+g" = "exec google-chrome-stable";
+          "XF86MonBrightnessUp" = "exec light -A 1";
+          "XF86MonBrightnessDown" = "exec light -U 1";
+          "Print" = "exec flameshot full";
+          "Shift+Print" = "exec flameshot gui";
+        };
       modifier = "Mod4";
       terminal = "wezterm";
       menu = "rofi -show combi";

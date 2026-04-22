@@ -28,7 +28,7 @@
     htop
     jetbrains-toolbox
     xclip
-    maim
     wine
+    flameshot
   ];
 }
