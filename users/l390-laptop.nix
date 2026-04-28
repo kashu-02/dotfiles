@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 {
   imports = [
@@ -72,8 +77,7 @@
           }
           {
             block = "memory";
-            format = " $icon $mem_total_used.eng(w:2) ";
-            format_alt = " $icon_swap $swap_used_percents.eng(w:2) ";
+            format = " $icon $mem_total_used.eng(w:2, p:1)  $icon_swap $swap_used.eng(w:2, p:1) / $zswap_comp_ratio ";
           }
           {
             block = "sound";
@@ -135,6 +139,19 @@
       modifier = "Mod4";
       terminal = "wezterm";
       menu = "rofi -show combi";
+    };
+  };
+
+  services.dunst = {
+    enable = true;
+    settings = {
+      global = {
+        timeout = 5;
+        offset = "30x30";
+        transparency = 10;
+        corner_radius = 10;
+        font = "Noto Sans CJK JP";
+      };
     };
   };
 
