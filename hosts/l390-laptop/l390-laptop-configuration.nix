@@ -14,7 +14,7 @@
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot/efi";
-  
+
   boot.initrd.systemd.enable = true;
 
   boot.kernelParams = [
@@ -24,10 +24,12 @@
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
   ];
 
-  swapDevices = [{
-    device = "/var/lib/swapfile";
-    size = 16 * 1024;
-  }];
+  swapDevices = [
+    {
+      device = "/var/lib/swapfile";
+      size = 16 * 1024;
+    }
+  ];
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -59,7 +61,10 @@
         mtu = 1400;
 
         # the IP address and subnet of this peer
-        ips = [ "10.100.0.8/32" "2401:2d60:3:14f::8/128" ];
+        ips = [
+          "10.100.0.8/32"
+          "2401:2d60:3:14f::8/128"
+        ];
 
         # WireGuard Port
         # Must be accessible by peers
@@ -83,8 +88,8 @@
               "192.168.2.0/24"
             ];
             endpoint = "103.26.27.245:51820";
-#            endpoint = "wg.kashu.dev:51820";
-#           endpoint = "[240b:13:3ea0:500:be24:11ff:feed:bf9b]:51820";
+            #            endpoint = "wg.kashu.dev:51820";
+            #           endpoint = "[240b:13:3ea0:500:be24:11ff:feed:bf9b]:51820";
             #  ToDo: route to endpoint not automatically configured
             # https://wiki.archlinux.org/index.php/WireGuard#Loop_routing
             # https://discourse.nixos.org/t/solved-minimal-firewall-setup-for-wireguard-client/7577
