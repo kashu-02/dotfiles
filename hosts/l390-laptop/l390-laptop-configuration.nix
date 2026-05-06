@@ -169,6 +169,9 @@
     }
   ];
 
+  services.tailscale.enable = true;
+  networking.firewall.trustedInterfaces = [ "tailscale0" ];
+
   # Bluetooth Settings
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
