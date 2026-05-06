@@ -1,4 +1,9 @@
-{ pkgs, lib, config, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  ...
+}:
 
 {
   imports = [
@@ -119,7 +124,7 @@
       ];
       keybindings =
         let
-          modifier = config.xsession.windowManager.i3.config.modifier;
+          inherit (config.xsession.windowManager.i3.config) modifier;
         in
         lib.mkOptionDefault {
           #  "${modifier}+Return" = "exec i3-sensible-terminal";
