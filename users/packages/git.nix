@@ -14,6 +14,7 @@ _:
         pu = "push origin";
         pl = "pull origin";
       };
+      push.autoSetupRemote = true;
     };
     ignores = [
       ".idea/"
