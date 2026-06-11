@@ -25,10 +25,10 @@
       peco
       nmap
       ripgrep
+      claude-code
     ])
     ++ (with pkgs.unstable; [
       gemini-cli
-      claude-code
       codex
       opencode
     ]);
