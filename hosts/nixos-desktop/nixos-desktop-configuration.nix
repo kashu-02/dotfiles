@@ -38,6 +38,10 @@
   networking.useDHCP = false;
 
   networking.vlans = {
+    vlan20 = {
+      id = 20;
+      interface = "enp1s0";
+    };
     vlan100 = {
       id = 100;
       interface = "enp1s0";
@@ -47,11 +51,25 @@
       interface = "enp1s0";
     };
   };
+  networking.interfaces.vlan20 = {
+    ipv4.addresses = [
+      {
+        address = "192.168.20.111";
+        prefixLength = 24;
+      }
+    ];
+  };
   networking.interfaces.vlan100 = {
     ipv4.addresses = [
       {
         address = "172.16.10.11";
         prefixLength = 24;
+      }
+    ];
+    ipv6.addresses = [
+      {
+        address = "2401:2d60:3:144::172.16.10.11";
+        prefixLength = 64;
       }
     ];
   };
@@ -64,12 +82,24 @@
     ];
   };
   networking.defaultGateway = "172.16.10.1";
+  networking.defaultGateway6 = "2401:2d60:3:144::1";
   networking.nameservers = [ "172.16.10.254" ];
 
   # Bluetooth
   hardware.bluetooth.enable = true;
   hardware.bluetooth.powerOnBoot = true;
   services.blueman.enable = true;
+
+  # Sound
+  services.pulseaudio.enable = false;
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    jack.enable = true;
+  };
 
   # Set your time zone.
   time.timeZone = "Asia/Tokyo";
