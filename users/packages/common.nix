@@ -26,10 +26,10 @@
       nmap
       ripgrep
       gh
+      claude-code
     ])
     ++ (with pkgs.unstable; [
       gemini-cli
-      claude-code
       codex
       opencode
     ]);
