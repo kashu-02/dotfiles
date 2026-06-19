@@ -13,6 +13,7 @@ _:
         st = "status -uno";
         pu = "push origin";
         pl = "pull origin";
+        puhs = "push";
       };
       push.autoSetupRemote = true;
     };
