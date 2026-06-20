@@ -2,59 +2,59 @@ _: {
   programs.ssh = {
     enable = true;
     enableDefaultConfig = false;
-    matchBlocks."*" = {
-      compression = true;
-      serverAliveInterval = 10;
+    settings."*" = {
+      Compression = true;
+      ServerAliveInterval = 10;
     };
-    matchBlocks."github.com" = {
-      hostname = "github.com";
-      identitiesOnly = true;
-      identityFile = "~/.ssh/github";
-      user = "git";
+    settings."github.com" = {
+      HostName = "github.com";
+      IdentitiesOnly = true;
+      IdentityFile = "~/.ssh/github";
+      User = "git";
     };
-    matchBlocks."git.bgp.ne.jp" = {
-      hostname = "git.bgp.ne.jp";
-      identitiesOnly = true;
-      identityFile = "~/.ssh/github";
-      user = "git";
+    settings."git.bgp.ne.jp" = {
+      HostName = "git.bgp.ne.jp";
+      IdentitiesOnly = true;
+      IdentityFile = "~/.ssh/github";
+      User = "git";
     };
-    matchBlocks."dev-nix" = {
-      hostname = "home.kashu.dev";
-      identityFile = "~/.ssh/dev-nix";
-      port = 56754;
-      user = "kashu";
+    settings."dev-nix" = {
+      HostName = "home.kashu.dev";
+      IdentityFile = "~/.ssh/dev-nix";
+      Port = 56754;
+      User = "kashu";
     };
-    matchBlocks."desktop" = {
-      hostname = "home.kashu.dev";
-      identityFile = "~/.ssh/dev-nix";
-      port = 56756;
-      user = "kashu";
+    settings."desktop" = {
+      HostName = "home.kashu.dev";
+      IdentityFile = "~/.ssh/dev-nix";
+      Port = 56756;
+      User = "kashu";
     };
-    matchBlocks."lab-pc" = {
-      hostname = "192.168.50.100";
-      identityFile = "~/.ssh/lab-pc";
-      user = "kashu";
-      proxyJump = "dev-nix";
+    settings."lab-pc" = {
+      HostName = "192.168.50.100";
+      IdentityFile = "~/.ssh/lab-pc";
+      User = "kashu";
+      ProxyJump = "dev-nix";
     };
-    matchBlocks."u-aizu" = {
-      hostname = "sshgate.u-aizu.ac.jp";
-      identityFile = "~/.ssh/u-aizu";
-      user = "m5301034";
+    settings."u-aizu" = {
+      HostName = "sshgate.u-aizu.ac.jp";
+      IdentityFile = "~/.ssh/u-aizu";
+      User = "m5301034";
     };
-    matchBlocks."linsv" = {
-      hostname = "linsv.u-aizu.ac.jp";
-      user = "m5301034";
-      identityFile = "~/.ssh/u-aizu";
-      proxyJump = "u-aizu";
+    settings."linsv" = {
+      HostName = "linsv.u-aizu.ac.jp";
+      User = "m5301034";
+      IdentityFile = "~/.ssh/u-aizu";
+      ProxyJump = "u-aizu";
     };
-    matchBlocks."llmsv" = {
-      hostname = "192.168.11.250";
-      identityFile = "~/.ssh/github";
+    settings."llmsv" = {
+      HostName = "192.168.11.250";
+      IdentityFile = "~/.ssh/github";
     };
-    matchBlocks."containerlab" = {
-      hostname = "172.16.10.110";
-      identityFile = "~/.ssh/github";
-      user = "kashu";
+    settings."containerlab" = {
+      HostName = "172.16.10.110";
+      IdentityFile = "~/.ssh/github";
+      User = "kashu";
     };
   };
 }

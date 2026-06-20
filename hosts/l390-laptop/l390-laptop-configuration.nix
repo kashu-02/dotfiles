@@ -181,9 +181,6 @@
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
 
-  # Brightness
-  programs.light.enable = true;
-
   # Input devices
   hardware.trackpoint = {
     enable = true;
@@ -301,6 +298,7 @@
     unzip
     traceroute
     dig
+    brightnessctl
   ];
 
   # Nix-ld
