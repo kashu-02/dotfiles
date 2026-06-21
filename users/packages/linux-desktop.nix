@@ -15,7 +15,7 @@
     slack
     discord
     _1password-gui
-    thunderbird
+    thunderbird-bin
     vlc
     nodejs
     xarchiver

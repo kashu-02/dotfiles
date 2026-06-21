@@ -19,7 +19,9 @@
       inoremap <silent> jj <ESC>
       inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
     '';
-    extraLuaConfig = ''
+    initLua = ''
+      local builtin = require('telescope.builtin')
+
       vim.keymap.set('n', '<C-n>', ':Neotree filesystem reveal left<CR>')
       vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
       vim.keymap.set('n', '<leader>fg', builtin.live_grep, { desc = 'Telescope live grep' })
@@ -27,6 +29,8 @@
       vim.keymap.set('n', '<leader>fh', builtin.help_tags, { desc = 'Telescope help tags' })
     '';
     withNodeJs = true;
+    withPython3 = true;
+    withRuby = true;
     coc = {
       enable = true;
       pluginConfig = ''
@@ -221,7 +225,6 @@
       }
       barbar-nvim
 
-      coc-tsserver # TypeScript LSP
       coc-rust-analyzer # Rust LSP
       coc-yaml
       coc-toml
@@ -235,7 +238,6 @@
       coc-jest
       coc-html
       coc-git
-      coc-go
       coc-eslint
       coc-emmet
       coc-docker
