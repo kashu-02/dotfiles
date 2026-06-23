@@ -37,6 +37,8 @@
       inputs.hyprlang.follows = "hyprland/hyprlang";
     };
 
+    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
+
     nix-claude-code.url = "github:ryoppippi/nix-claude-code";
 
     systems.url = "github:nix-systems/default";
