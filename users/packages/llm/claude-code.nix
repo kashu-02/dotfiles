@@ -8,5 +8,8 @@
     enable = true;
     enableMcpIntegration = true;
     package = pkgs.llm-agents.claude-code;
+    settings = {
+      includeCoAuthoredBy = false;
+    };
   };
 }
