@@ -3,6 +3,6 @@
   programs.opencode = {
     enable = true;
     enableMcpIntegration = true;
-    package = pkgs.unstable.opencode;
+    package = pkgs.llm-agents.opencode;
   };
 }

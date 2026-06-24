@@ -3,6 +3,6 @@
   programs.codex = {
     enable = true;
     enableMcpIntegration = true;
-    package = pkgs.unstable.codex;
+    package = pkgs.llm-agents.codex;
   };
 }
