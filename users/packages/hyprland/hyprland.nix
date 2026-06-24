@@ -86,18 +86,32 @@
     ]
     ++ (
       # workspaces
-      # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+      # binds $mod + [shift +] {1..0} to [move to] workspace {1..10}
       builtins.concatLists (
-        builtins.genList (
-          i:
-          let
-            ws = i + 1;
-          in
+        builtins.map
+          (
+            key:
+            let
+              ws = if key == 0 then 10 else key;
+              keycode = if key == 0 then 19 else key + 9;
+            in
+            [
+              "$mod, code:${toString keycode}, workspace, ${toString ws}"
+              "$mod SHIFT, code:${toString keycode}, movetoworkspace, ${toString ws}"
+            ]
+          )
           [
-            "$mod, code:1${toString i}, workspace, ${toString ws}"
-            "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+            1
+            2
+            3
+            4
+            5
+            6
+            7
+            8
+            9
+            0
           ]
-        ) 9
       )
     );
 
