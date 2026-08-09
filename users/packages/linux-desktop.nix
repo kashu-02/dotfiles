@@ -8,6 +8,7 @@
     ./wezterm.nix
     ./rofi.nix
     ./ollama.nix
+    ./udiskie.nix
   ];
 
   home.packages = with pkgs; [
