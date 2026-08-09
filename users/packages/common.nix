@@ -10,6 +10,7 @@
     ./zsh.nix
     ./tmux.nix
     ./direnv.nix
+    ./llm
     ./notify-command-done.nix
   ];
 
@@ -25,11 +26,8 @@
       peco
       nmap
       ripgrep
-      claude-code
     ])
     ++ (with pkgs.unstable; [
       gemini-cli
-      codex
-      opencode
     ]);
 }
