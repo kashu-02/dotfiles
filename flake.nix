@@ -37,9 +37,7 @@
       inputs.hyprlang.follows = "hyprland/hyprlang";
     };
 
-    mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
-
-    llm-agents.url = "github:numtide/llm-agents.nix";
+    nix-claude-code.url = "github:ryoppippi/nix-claude-code";
 
     systems.url = "github:nix-systems/default";
   };
@@ -54,7 +52,7 @@
       home-manager,
       treefmt-nix,
       systems,
-      llm-agents,
+      nix-claude-code,
       ...
     }:
     let
@@ -89,7 +87,7 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
-            { nixpkgs.overlays = [ llm-agents.overlays.default ]; }
+            { nixpkgs.overlays = [ nix-claude-code.overlays.default ]; }
           ];
         };
 
@@ -120,7 +118,7 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
-            { nixpkgs.overlays = [ llm-agents.overlays.default ]; }
+            { nixpkgs.overlays = [ nix-claude-code.overlays.default ]; }
           ];
         };
 
@@ -151,7 +149,7 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
-            { nixpkgs.overlays = [ llm-agents.overlays.default ]; }
+            { nixpkgs.overlays = [ nix-claude-code.overlays.default ]; }
           ];
         };
 
@@ -183,7 +181,7 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
-            { nixpkgs.overlays = [ llm-agents.overlays.default ]; }
+            { nixpkgs.overlays = [ nix-claude-code.overlays.default ]; }
           ];
         };
 
@@ -215,7 +213,6 @@
               home-manager.extraSpecialArgs = { inherit inputs; };
             }
             unstable-overlays
-            { nixpkgs.overlays = [ llm-agents.overlays.default ]; }
           ];
         };
 
