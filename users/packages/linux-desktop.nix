@@ -26,7 +26,7 @@
     pavucontrol
     evince
     htop
-    jetbrains-toolbox
+    unstable.jetbrains-toolbox
     xclip
     wine
     flameshot

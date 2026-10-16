@@ -41,6 +41,46 @@
 
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
 
+    agent-skills-nix = {
+      url = "github:Kyure-A/agent-skills-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    yomiyasu = {
+      url = "github:nanaism/yomiyasu";
+      flake = false;
+    };
+
+    google-skills = {
+      url = "github:google/skills";
+      flake = false;
+    };
+
+    supabase-agent-skills = {
+      url = "github:supabase/agent-skills";
+      flake = false;
+    };
+
+    anthropic-skills = {
+      url = "github:anthropics/skills";
+      flake = false;
+    };
+
+    vercel-agent-skills = {
+      url = "github:vercel-labs/agent-skills";
+      flake = false;
+    };
+
+    routeros-skills = {
+      url = "github:tikoci/routeros-skills";
+      flake = false;
+    };
+
+    ix-toolkit = {
+      url = "github:yuu61/ix-toolkit";
+      flake = false;
+    };
+
     llm-agents.url = "github:numtide/llm-agents.nix";
 
     systems.url = "github:nix-systems/default";
