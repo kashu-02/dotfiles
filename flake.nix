@@ -41,6 +41,16 @@
 
     mcp-servers-nix.url = "github:natsukium/mcp-servers-nix";
 
+    agent-skills-nix = {
+      url = "github:Kyure-A/agent-skills-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    yomiyasu = {
+      url = "github:nanaism/yomiyasu";
+      flake = false;
+    };
+
     llm-agents.url = "github:numtide/llm-agents.nix";
 
     systems.url = "github:nix-systems/default";

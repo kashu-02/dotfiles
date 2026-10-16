@@ -1,5 +1,25 @@
 {
   "nodes": {
+    "agent-skills-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1791801176,
+        "narHash": "sha256-7yMjYQUjpCy0IhItfGt2EJbOobNu1pkIrBX2GA3yOcU=",
+        "owner": "Kyure-A",
+        "repo": "agent-skills-nix",
+        "rev": "2948865044b2af55c8c4e4eb2abda7de79d60f0e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Kyure-A",
+        "repo": "agent-skills-nix",
+        "type": "github"
+      }
+    },
     "aquamarine": {
       "inputs": {
         "hyprutils": [
@@ -892,6 +912,7 @@
     },
     "root": {
       "inputs": {
+        "agent-skills-nix": "agent-skills-nix",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "hyprpaper": "hyprpaper",
@@ -903,7 +924,8 @@
         "nixpkgs-unstable": "nixpkgs-unstable",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
         "systems": "systems_4",
-        "treefmt-nix": "treefmt-nix_2"
+        "treefmt-nix": "treefmt-nix_2",
+        "yomiyasu": "yomiyasu"
       }
     },
     "rose-pine-hyprcursor": {
@@ -1088,6 +1110,22 @@
       "original": {
         "owner": "hyprwm",
         "repo": "xdg-desktop-portal-hyprland",
+        "type": "github"
+      }
+    },
+    "yomiyasu": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791863709,
+        "narHash": "sha256-hBM4uV/otDc5YlHGW8GNze9v7EOuj+zbxArxk04MCrQ=",
+        "owner": "nanaism",
+        "repo": "yomiyasu",
+        "rev": "60bf877acebc86651e0b67d70112a66245f87758",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nanaism",
+        "repo": "yomiyasu",
         "type": "github"
       }
     }
