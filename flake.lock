@@ -20,6 +20,22 @@
         "type": "github"
       }
     },
+    "anthropic-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791571549,
+        "narHash": "sha256-+UIqBnzyeIOvJSKYaDaE3GYPEpLw7qQqyUw5S971AfU=",
+        "owner": "anthropics",
+        "repo": "skills",
+        "rev": "dbd4588f9e1033efb41dad4bef2f7947c8993d44",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anthropics",
+        "repo": "skills",
+        "type": "github"
+      }
+    },
     "aquamarine": {
       "inputs": {
         "hyprutils": [
@@ -176,6 +192,22 @@
       "original": {
         "owner": "hercules-ci",
         "repo": "gitignore.nix",
+        "type": "github"
+      }
+    },
+    "google-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792101343,
+        "narHash": "sha256-5nQqR4e4o0VBQl1JQw+TzN/zZwFs+fMLVH9iOmkNIfI=",
+        "owner": "google",
+        "repo": "skills",
+        "rev": "730939d15d6f026cbd29f7ea707d66aa320fb93a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "google",
+        "repo": "skills",
         "type": "github"
       }
     },
@@ -728,6 +760,22 @@
         "type": "github"
       }
     },
+    "ix-toolkit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791369057,
+        "narHash": "sha256-trM2vnPWTaMAB47STUuzquUBql7skM+/dQ5yP/mtJwQ=",
+        "owner": "yuu61",
+        "repo": "ix-toolkit",
+        "rev": "360c0aa1ed8d1b8e67ad2359a2d141e6247a2664",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yuu61",
+        "repo": "ix-toolkit",
+        "type": "github"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "bun2nix": "bun2nix",
@@ -913,9 +961,12 @@
     "root": {
       "inputs": {
         "agent-skills-nix": "agent-skills-nix",
+        "anthropic-skills": "anthropic-skills",
+        "google-skills": "google-skills",
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "hyprpaper": "hyprpaper",
+        "ix-toolkit": "ix-toolkit",
         "llm-agents": "llm-agents",
         "mcp-servers-nix": "mcp-servers-nix",
         "nix-claude-code": "nix-claude-code",
@@ -923,8 +974,11 @@
         "nixpkgs": "nixpkgs_4",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "rose-pine-hyprcursor": "rose-pine-hyprcursor",
+        "routeros-skills": "routeros-skills",
+        "supabase-agent-skills": "supabase-agent-skills",
         "systems": "systems_4",
         "treefmt-nix": "treefmt-nix_2",
+        "vercel-agent-skills": "vercel-agent-skills",
         "yomiyasu": "yomiyasu"
       }
     },
@@ -950,6 +1004,38 @@
       "original": {
         "owner": "ndom91",
         "repo": "rose-pine-hyprcursor",
+        "type": "github"
+      }
+    },
+    "routeros-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1791265872,
+        "narHash": "sha256-JSrSVZtyMBhqDna6ljrBZX9GShLyMdCTJMMs4BgpiA0=",
+        "owner": "tikoci",
+        "repo": "routeros-skills",
+        "rev": "03cd9c771e11e4a0faf5b35b6bd21eb342fd9024",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tikoci",
+        "repo": "routeros-skills",
+        "type": "github"
+      }
+    },
+    "supabase-agent-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1790944488,
+        "narHash": "sha256-MKa/ZwI2yfwiqI76uNg7QsX9F6MF2nctOEme6UtwtQM=",
+        "owner": "supabase",
+        "repo": "agent-skills",
+        "rev": "c9be0e931b7930f7d02126d04774d904c381e7d7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "supabase",
+        "repo": "agent-skills",
         "type": "github"
       }
     },
@@ -1069,6 +1155,22 @@
       "original": {
         "owner": "numtide",
         "repo": "flake-utils",
+        "type": "github"
+      }
+    },
+    "vercel-agent-skills": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1787924167,
+        "narHash": "sha256-tTSJf53OQltUfxTH4hdqcnw5ywCjCZP8/JqQ593cyB8=",
+        "owner": "vercel-labs",
+        "repo": "agent-skills",
+        "rev": "063bee94c3f4df8453406c830b0a7df0f2860278",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vercel-labs",
+        "repo": "agent-skills",
         "type": "github"
       }
     },
