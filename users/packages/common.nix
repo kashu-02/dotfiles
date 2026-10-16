@@ -26,6 +26,7 @@
       peco
       nmap
       ripgrep
+      gh
     ])
     ++ (with pkgs.unstable; [
       gemini-cli
