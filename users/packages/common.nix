@@ -26,5 +26,6 @@
     nmap
     ripgrep
     gh
+    jq
   ];
 }
