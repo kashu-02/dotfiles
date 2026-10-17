@@ -5,6 +5,7 @@
 {
   imports = [
     #    ./ssh.nix
+    ./attic.nix
     ./git.nix
     ./nvim.nix
     ./zsh.nix

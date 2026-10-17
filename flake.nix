@@ -123,6 +123,7 @@
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
+            ./hosts/common/nix-cache.nix
             ./hosts/dev-nix/dev-nix-configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -155,6 +156,7 @@
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
+            ./hosts/common/nix-cache.nix
             ./hosts/lab-pc/kashu-lab-nixos-configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -187,6 +189,7 @@
         nixpkgs.lib.nixosSystem {
           inherit system;
           modules = [
+            ./hosts/common/nix-cache.nix
             ./hosts/l390-laptop/l390-laptop-configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -220,6 +223,7 @@
           inherit system;
           specialArgs = { inherit inputs; };
           modules = [
+            ./hosts/common/nix-cache.nix
             ./hosts/nixos-desktop/nixos-desktop-configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -252,6 +256,7 @@
         nix-darwin.lib.darwinSystem {
           inherit system;
           modules = [
+            ./hosts/common/nix-cache.nix
             ./hosts/macbookairm1
             home-manager.darwinModules.home-manager
             {
