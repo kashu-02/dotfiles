@@ -222,6 +222,7 @@
     };
     ports = [ 56756 ];
   };
+  programs.mosh.enable = true;
 
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
