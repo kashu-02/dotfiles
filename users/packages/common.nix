@@ -5,6 +5,7 @@
 {
   imports = [
     #    ./ssh.nix
+    ./attic.nix
     ./git.nix
     ./nvim.nix
     ./zsh.nix
@@ -16,18 +17,16 @@
 
   # The home.packages option allows you to install Nix packages into your
   # environment.
-  home.packages =
-    (with pkgs; [
-      nodejs
-      fastfetch
-      htop
-      kubectl
-      kubernetes-helm
-      peco
-      nmap
-      ripgrep
-    ])
-    ++ (with pkgs.unstable; [
-      gemini-cli
-    ]);
+  home.packages = with pkgs; [
+    nodejs
+    fastfetch
+    htop
+    kubectl
+    kubernetes-helm
+    peco
+    nmap
+    ripgrep
+    gh
+    jq
+  ];
 }
