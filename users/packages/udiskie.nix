@@ -1,10 +1,10 @@
 _:
 
 {
-services.udiskie = {
+  services.udiskie = {
     enable = true;
     settings = {
     };
-};
+  };
 
 }
