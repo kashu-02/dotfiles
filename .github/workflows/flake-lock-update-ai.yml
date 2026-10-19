@@ -1,0 +1,45 @@
+name: "Flake.lock: update AI tools"
+
+on:
+  workflow_dispatch: # allows manual triggering
+  schedule:
+    - cron: '0 0 * * 0,2-6' # runs daily except Monday (handled by full update) at 00:00 UTC
+
+jobs:
+  nix-flake-update-ai:
+    permissions:
+      contents: write
+      id-token: write
+      issues: write
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - id: update
+        name: Update AI flake inputs
+        uses: DeterminateSystems/update-flake-lock@main
+        with:
+          token: ${{ secrets.PAT }}
+          inputs: >-
+            llm-agents
+            nix-claude-code
+            mcp-servers-nix
+            agent-skills-nix
+            yomiyasu
+            google-skills
+            supabase-agent-skills
+            anthropic-skills
+            vercel-agent-skills
+            routeros-skills
+            ix-toolkit
+          branch: "update_flake_lock_ai_action"
+          pr-title: "Auto Update AI Nix flake inputs"
+          pr-labels: |
+            dependencies
+            automated
+      - if: steps.update.outputs.pull-request-number != ''
+        uses: peter-evans/enable-pull-request-automerge@v3
+        with:
+          token: ${{ secrets.PAT }}
+          pull-request-number: ${{ steps.update.outputs.pull-request-number }}
