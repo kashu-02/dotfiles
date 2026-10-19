@@ -3,7 +3,7 @@ name: "Flake.lock: update Nix dependencies"
 on:
   workflow_dispatch: # allows manual triggering
   schedule:
-    - cron: '0 0 * * 1' # runs weekly on Monday at 00:00 UTC
+    - cron: '0 18 * * 0' # runs weekly on Monday at 03:00 JST (Sunday 18:00 UTC)
 
 jobs:
   nix-flake-update:

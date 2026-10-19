@@ -3,7 +3,7 @@ name: "Flake.lock: update AI tools"
 on:
   workflow_dispatch: # allows manual triggering
   schedule:
-    - cron: '0 0 * * 0,2-6' # runs daily except Monday (handled by full update) at 00:00 UTC
+    - cron: '0 18 * * 1-6' # runs daily except Monday at 03:00 JST (Mon-Sat 18:00 UTC)
 
 jobs:
   nix-flake-update-ai:
