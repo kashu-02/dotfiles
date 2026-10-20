@@ -760,6 +760,22 @@
         "type": "github"
       }
     },
+    "imozuru": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1792483712,
+        "narHash": "sha256-cQ4PohnREV/3TLkiWv9VqDkwQ9O2ZNRuVsDSzT41MVY=",
+        "owner": "MaryCache",
+        "repo": "imozuru",
+        "rev": "dc8ab904c66c11bd6fc2ec7b88e0bba7c919d8e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "MaryCache",
+        "repo": "imozuru",
+        "type": "github"
+      }
+    },
     "ix-toolkit": {
       "flake": false,
       "locked": {
@@ -966,6 +982,7 @@
         "home-manager": "home-manager",
         "hyprland": "hyprland",
         "hyprpaper": "hyprpaper",
+        "imozuru": "imozuru",
         "ix-toolkit": "ix-toolkit",
         "llm-agents": "llm-agents",
         "mcp-servers-nix": "mcp-servers-nix",
