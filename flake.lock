@@ -198,11 +198,11 @@
     "google-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1792435456,
-        "narHash": "sha256-jxgOVYLUzVRMOLQv/tGubEDvBdkg7c5jVIs1PJk/I3Y=",
+        "lastModified": 1792527036,
+        "narHash": "sha256-3j+Ruxj7qy3Dah4b0IW9U76p3m0ghoNRzAdSZpnNk3Y=",
         "owner": "google",
         "repo": "skills",
-        "rev": "22bf5d15d546318171a1a27dda7fcdff9cb3029b",
+        "rev": "dcedfd4d770b27e9586601e7ded26d58c4eb315b",
         "type": "github"
       },
       "original": {
@@ -785,11 +785,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1792412467,
-        "narHash": "sha256-+8HD0xrtrXiSMgxVSLVzxEk2EicPZBz9/bBHc2u6vb0=",
+        "lastModified": 1792527991,
+        "narHash": "sha256-mscDkbXtRY6H9Z/Z2acpyUEOZqSF4LuOy1dVjVn+7GU=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "8fa7ff4193be923056b342d48d5bb38466791fe1",
+        "rev": "1dbf6c1260b33850a4e933836c35d07e842c2298",
         "type": "github"
       },
       "original": {
@@ -803,11 +803,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1792434992,
-        "narHash": "sha256-mIR4xJdpU/0Ia+eZ6ma5zuAyCi1cP6cl6s0t/IbAg+I=",
+        "lastModified": 1792493442,
+        "narHash": "sha256-rpylkhEaUsM3ux2dOyvDay4D9BJ9mQv5nEkcdZJBWN0=",
         "owner": "natsukium",
         "repo": "mcp-servers-nix",
-        "rev": "d48e2401da66858d8c13303717acbe4e2410fc57",
+        "rev": "e5c7dd4fe87e220541b42c3a165299f9c64f065a",
         "type": "github"
       },
       "original": {
@@ -821,11 +821,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1792440130,
-        "narHash": "sha256-cnwrSe9pHZXi+a32S8KwZ5u6ltpHMrMFCj0oVow08H0=",
+        "lastModified": 1792526540,
+        "narHash": "sha256-EFRRAmjlTjpetr8gR05Toj+rdAoX/d54ZTJyebPWVS0=",
         "owner": "ryoppippi",
         "repo": "nix-claude-code",
-        "rev": "01ea2f3b93c72301c99862d33704ab2848f67b51",
+        "rev": "675425327caed54c17a6206adf44028053177987",
         "type": "github"
       },
       "original": {
@@ -1218,11 +1218,11 @@
     "yomiyasu": {
       "flake": false,
       "locked": {
-        "lastModified": 1792432681,
-        "narHash": "sha256-G4gvrgE5oIbW9jEH4JKJBiRr7L0Sl/nwWeX2mbmBRwg=",
+        "lastModified": 1792515247,
+        "narHash": "sha256-aX/4syEAQU/OUHujTfHAxfS1KsXfPnsjfXiguyqBWjs=",
         "owner": "nanaism",
         "repo": "yomiyasu",
-        "rev": "8be3ef6e0e668f14cae30c3da6b0c20b95b2179f",
+        "rev": "fbe02c93877d697cc53d9377b7a45dd8a1dd99b3",
         "type": "github"
       },
       "original": {
