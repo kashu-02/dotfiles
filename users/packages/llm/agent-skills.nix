@@ -1,4 +1,9 @@
-{ lib, inputs, ... }:
+{
+  lib,
+  inputs,
+  pkgs,
+  ...
+}:
 let
   # google/skills nests skills under skills/<category>/. Agents only read one
   # level of skills, so each category becomes its own source.
@@ -20,10 +25,22 @@ in
 {
   imports = [ inputs.agent-skills-nix.homeManagerModules.default ];
 
+  # imozuru: source retrieval, PDF extraction/OCR, and video subtitles.
+  home.packages = with pkgs; [
+    python3
+    poppler-utils
+    tesseract
+    yt-dlp
+  ];
+
   programs.agent-skills = {
     enable = true;
 
     sources = googleSources // {
+      imozuru = {
+        input = "imozuru";
+        subdir = "skills";
+      };
       yomiyasu = {
         input = "yomiyasu";
         subdir = "skills";
@@ -58,6 +75,7 @@ in
         "ix-toolkit"
       ];
       enable = [
+        "imozuru"
         "yomiyasu"
         # anthropics/skills
         "frontend-design"
