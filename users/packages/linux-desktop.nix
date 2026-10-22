@@ -31,5 +31,7 @@
     xclip
     wine
     flameshot
+    unstable.antigravity-hub
+    unstable.antigravity-ide-fhs
   ];
 }
