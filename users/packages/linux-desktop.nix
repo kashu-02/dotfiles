@@ -8,6 +8,7 @@
     ./wezterm.nix
     ./rofi.nix
     ./ollama.nix
+    ./llm/chatgpt.nix
   ];
 
   home.packages = with pkgs; [
