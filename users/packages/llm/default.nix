@@ -2,7 +2,7 @@
 {
   imports = [
     ./agent-skills.nix
-    ./antigravity-cli.nix
+    ./antigravity.nix
     ./claude-code.nix
     ./codex.nix
     ./ix-toolkit.nix
