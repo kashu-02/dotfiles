@@ -198,11 +198,11 @@
     "google-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1792609736,
-        "narHash": "sha256-TLvMgIYdSRWUrcemUlALDeHLSZ2pBKdfReUALlh5HFI=",
+        "lastModified": 1792700698,
+        "narHash": "sha256-RdrJ+10y1/3D8Q527ttHayBBcQTOVEQanG63BmfL+ZI=",
         "owner": "google",
         "repo": "skills",
-        "rev": "b571dd9fbd6444e0c0e7c92b9ffe322af28bb582",
+        "rev": "2826afea139f84afdc99dab8e69f555c775e1ac5",
         "type": "github"
       },
       "original": {
@@ -801,11 +801,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1792606210,
-        "narHash": "sha256-xd88DeFuI6CROaYA2hwjsOCs4t/SO6W2neinyE/GJrg=",
+        "lastModified": 1792687927,
+        "narHash": "sha256-O8JsXXPl26uxJ2nITotVnq7FAubqzsK4pWhZuh78bDA=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "83288aabd630be40c729f85530f961dae5537a44",
+        "rev": "24cf271f40105749bb82ad318013c372183ef28e",
         "type": "github"
       },
       "original": {
@@ -819,11 +819,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1792580643,
-        "narHash": "sha256-cIfPe1yoF8PrFysfcW8qmyrt3PgzRnP4itIS2qkmfqg=",
+        "lastModified": 1792687693,
+        "narHash": "sha256-YzHoTt27MYZc2uUwKsXDUBCc1LNwvnDGCeiWX0gCgHo=",
         "owner": "natsukium",
         "repo": "mcp-servers-nix",
-        "rev": "9eb2d8a5a4779d707f38b1806c029b08c736720f",
+        "rev": "5398bfd1f81dcea359e89eaa782ff18dce11d285",
         "type": "github"
       },
       "original": {
@@ -837,11 +837,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1792551725,
-        "narHash": "sha256-Gy52oSC9hu1A3h9TrHeQeNFgLf4F1DWticWBxP+Sbes=",
+        "lastModified": 1792645323,
+        "narHash": "sha256-9gjDbBLMBdf9ROv3eupM5u/aYLE5yU1MKNOS45xPxZc=",
         "owner": "ryoppippi",
         "repo": "nix-claude-code",
-        "rev": "941308ea415f37df18d64e769a605c193eb8bf31",
+        "rev": "a10ad87a8c1751ff09943208f6e4a61036aa2ffa",
         "type": "github"
       },
       "original": {
@@ -1027,11 +1027,11 @@
     "routeros-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1792269501,
-        "narHash": "sha256-W0CUP9UfmplPylBCfoOZBpvcBYK4oC+YkRw5j3diH6U=",
+        "lastModified": 1792632758,
+        "narHash": "sha256-PrZaSBCCgl5qNqUu8MfEmkclDXOU2giY/Pq5rSzA7Y8=",
         "owner": "tikoci",
         "repo": "routeros-skills",
-        "rev": "d14375d528786acd571d1d9ed109771c5bacb893",
+        "rev": "cd0ea3c14d92157a32e6debfe383cb881ff69e5e",
         "type": "github"
       },
       "original": {
@@ -1235,11 +1235,11 @@
     "yomiyasu": {
       "flake": false,
       "locked": {
-        "lastModified": 1792610234,
-        "narHash": "sha256-5Weg6+HrNiCd3UuNNfDHdMK7FI6B7is/erz3TvcXdic=",
+        "lastModified": 1792683098,
+        "narHash": "sha256-WDBSvH+HX1kR8tTMB0mJQWtSX3HNjI54Rkmlwflroiw=",
         "owner": "nanaism",
         "repo": "yomiyasu",
-        "rev": "9fabae2218e42c18a9301d8b1bca7af3cf3fab67",
+        "rev": "c09270bc93daab14e253fb3ef406182011b79ccb",
         "type": "github"
       },
       "original": {
