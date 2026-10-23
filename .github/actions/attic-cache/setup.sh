@@ -34,6 +34,9 @@ for _ in {1..12}; do
   sleep 1
 done
 if [[ "$ready" != true ]]; then
+  echo '::group::cloudflared log'
+  cat "$state/cloudflared.log" || true
+  echo '::endgroup::'
   echo '::error::Attic is unreachable. Check Tunnel TCP routing, Service Auth policy, and Attic token.'
   exit 1
 fi
