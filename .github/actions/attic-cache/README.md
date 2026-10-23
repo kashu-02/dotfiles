@@ -42,12 +42,14 @@ Repository Settings → Secrets and variables → Actions に登録する。
 | --- | --- |
 | `CF_ACCESS_CLIENT_ID` | CI 用 Access Service Token の Client ID |
 | `CF_ACCESS_CLIENT_SECRET` | 同トークンの Client Secret |
-| `ATTIC_TOKEN` | Attic の `main` に pull／push 権限を持つ JWT（取得・送信で共用） |
+| `ATTIC_READ_TOKEN` | Attic の `main` に pull 権限のみを持つ JWT（取得用） |
+| `ATTIC_WRITE_TOKEN` | Attic の `main` に pull／push 権限を持つ JWT（main への送信用） |
 
 Tunnel のコネクタートークンや Attic の JWT 署名鍵を GitHub に登録する必要はない。Attic VM 上で、NixOS が用意するラッパーから期限付きトークンを発行する:
 
 ```sh
-sudo atticd-atticadm make-token --sub github-ci --validity '90 days' --pull main --push main
+sudo atticd-atticadm make-token --sub github-ci-read --validity '90 days' --pull main
+sudo atticd-atticadm make-token --sub github-ci-write --validity '90 days' --pull main --push main
 ```
 
 Service Token と Attic JWT は有効期限前に更新する。キャッシュ署名公開鍵は `hosts/common/nix-cache.nix` と同じ値を setup.sh に設定している。鍵をローテーションした場合は両方を更新する。
@@ -56,8 +58,8 @@ Service Token と Attic JWT は有効期限前に更新する。キャッシュ�
 
 - Secrets がない実行（fork PR、通常の Dependabot PR、導入前）は自宅キャッシュをスキップする。
 - 認証情報が揃っているのに接続／認証に失敗した場合は、設定不良を見逃さないようジョブを失敗させる。
-- PR では取得のみ実行するが、使用するトークン自体には pull／push 権限がある。`push` イベントの `refs/heads/main` はビルド成功後に `attic push ci:main ./result` を実行する。closure の計算は Attic が行う。
-- Repository Secrets は同一リポジトリの PR から変更された workflow でも参照できる。push ステップの条件は権限境界ではないため、書き込み権限のあるコントリビューターを信頼する構成。厳密な分離が必要なら pull 専用トークンを別途発行し、pull／push トークンを main 限定の GitHub Environment に置く専用ジョブへ分離する。
+- 取得には `ATTIC_READ_TOKEN` を使う。`push` イベントの `refs/heads/main` はビルド成功後に `ATTIC_WRITE_TOKEN` でログインし、`attic push ci:main ./result` を実行する。closure の計算は Attic が行う。
+- Repository Secrets は同一リポジトリの PR から変更された workflow でも参照できる。push ステップの条件は権限境界ではないため、`ATTIC_WRITE_TOKEN` についても書き込み権限のあるコントリビューターを信頼する構成。厳密に分離するなら、`ATTIC_WRITE_TOKEN` を main 限定の GitHub Environment に移し、push を専用ジョブに分ける。
 - 接続前にフレークに固定された nixpkgs から `cloudflared` と `attic-client` を取得する。接続後、実際の `nix-cache-info` と API 応答で疎通を検査する。
 - 導入後は main の CI で push の完了を確認し、次の変更のビルドログで `http://127.0.0.1:18080/main` から取得されることを確認する。既存キャッシュにあるパスは再取得されない。
 

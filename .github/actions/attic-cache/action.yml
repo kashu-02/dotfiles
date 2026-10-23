@@ -11,7 +11,7 @@ inputs:
     description: Access service token client secret
     required: true
   attic-token:
-    description: Attic token with pull and push permissions on main
+    description: Attic token with pull permission on main
     required: true
 outputs:
   enabled:
