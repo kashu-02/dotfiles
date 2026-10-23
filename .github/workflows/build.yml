@@ -2,6 +2,15 @@ name: "Build"
 
 on:
   workflow_call:
+    secrets:
+      CF_ACCESS_CLIENT_ID:
+        required: false
+      CF_ACCESS_CLIENT_SECRET:
+        required: false
+      ATTIC_READ_TOKEN:
+        required: false
+      ATTIC_WRITE_TOKEN:
+        required: false
 
 permissions:
   contents: read
@@ -69,6 +78,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Connect to home Attic cache
+        id: attic
+        uses: ./.github/actions/attic-cache
+        with:
+          client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          attic-token: ${{ secrets.ATTIC_READ_TOKEN }}
       - name: Restore and save Nix store
         uses: nix-community/cache-nix-action@v7
         with:
@@ -85,6 +101,19 @@ jobs:
         run: nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --dry-run --print-build-logs
       - name: Build NixOS configuration for ${{ matrix.config }}
         run: nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --print-build-logs
+      - name: Push build closure to Attic
+        if: steps.attic.outputs.enabled == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_WRITE_TOKEN }}
+          XDG_CONFIG_HOME: ${{ runner.temp }}/attic-ci/config
+        run: |
+          test -n "$ATTIC_TOKEN" || { echo '::error::ATTIC_WRITE_TOKEN is required for main pushes.'; exit 1; }
+          umask 077
+          attic login ci http://127.0.0.1:18080/ "$ATTIC_TOKEN"
+          attic push ci:main ./result
+      - name: Clean up Attic connection
+        if: always()
+        run: bash .github/actions/attic-cache/cleanup.sh
 
   build-darwin:
     needs: changes
@@ -97,6 +126,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Connect to home Attic cache
+        id: attic
+        uses: ./.github/actions/attic-cache
+        with:
+          client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          attic-token: ${{ secrets.ATTIC_READ_TOKEN }}
       - name: Restore and save Nix store
         uses: nix-community/cache-nix-action@v7
         with:
@@ -113,3 +149,16 @@ jobs:
         run: nix build .#darwinConfigurations.${{ matrix.config }}.system --dry-run --print-build-logs
       - name: Build Darwin configuration for ${{ matrix.config }}
         run: nix build .#darwinConfigurations.${{ matrix.config }}.system --print-build-logs
+      - name: Push build closure to Attic
+        if: steps.attic.outputs.enabled == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          ATTIC_TOKEN: ${{ secrets.ATTIC_WRITE_TOKEN }}
+          XDG_CONFIG_HOME: ${{ runner.temp }}/attic-ci/config
+        run: |
+          test -n "$ATTIC_TOKEN" || { echo '::error::ATTIC_WRITE_TOKEN is required for main pushes.'; exit 1; }
+          umask 077
+          attic login ci http://127.0.0.1:18080/ "$ATTIC_TOKEN"
+          attic push ci:main ./result
+      - name: Clean up Attic connection
+        if: always()
+        run: bash .github/actions/attic-cache/cleanup.sh

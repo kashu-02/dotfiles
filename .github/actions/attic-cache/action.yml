@@ -1,0 +1,30 @@
+name: Attic over Cloudflare Access
+description: Connect to the home Attic cache through an authenticated TCP tunnel
+inputs:
+  hostname:
+    description: Cloudflare Access application hostname
+    default: attic.kashu.dev
+  client-id:
+    description: Access service token client ID
+    required: true
+  client-secret:
+    description: Access service token client secret
+    required: true
+  attic-token:
+    description: Attic token with pull permission on main
+    required: true
+outputs:
+  enabled:
+    description: Whether the cache connection was configured
+    value: ${{ steps.setup.outputs.enabled }}
+runs:
+  using: composite
+  steps:
+    - id: setup
+      shell: bash
+      env:
+        ATTIC_HOSTNAME: ${{ inputs.hostname }}
+        TUNNEL_SERVICE_TOKEN_ID: ${{ inputs.client-id }}
+        TUNNEL_SERVICE_TOKEN_SECRET: ${{ inputs.client-secret }}
+        ATTIC_TOKEN: ${{ inputs.attic-token }}
+      run: bash "$GITHUB_ACTION_PATH/setup.sh"
