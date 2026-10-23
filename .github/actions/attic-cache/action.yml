@@ -1,17 +1,20 @@
-name: Attic over Cloudflare Access
-description: Connect to the home Attic cache through an authenticated TCP tunnel
+name: Attic over Cloudflare WARP
+description: Connect to the home Attic cache through a private hostname route
 inputs:
+  team-name:
+    description: Cloudflare Zero Trust team name (without .cloudflareaccess.com)
+    required: true
   hostname:
-    description: Cloudflare Access application hostname
-    default: attic.kashu.dev
+    description: Attic private hostname
+    default: attic.kashu.internal
   client-id:
-    description: Access service token client ID
+    description: Service token client ID authorized for WARP device enrollment
     required: true
   client-secret:
-    description: Access service token client secret
+    description: Service token client secret authorized for WARP device enrollment
     required: true
   attic-token:
-    description: Attic token with pull permission on main
+    description: Attic token with pull and push permissions on main
     required: true
 outputs:
   enabled:
@@ -23,8 +26,9 @@ runs:
     - id: setup
       shell: bash
       env:
+        CF_TEAM_NAME: ${{ inputs.team-name }}
         ATTIC_HOSTNAME: ${{ inputs.hostname }}
-        TUNNEL_SERVICE_TOKEN_ID: ${{ inputs.client-id }}
-        TUNNEL_SERVICE_TOKEN_SECRET: ${{ inputs.client-secret }}
+        CF_ACCESS_CLIENT_ID: ${{ inputs.client-id }}
+        CF_ACCESS_CLIENT_SECRET: ${{ inputs.client-secret }}
         ATTIC_TOKEN: ${{ inputs.attic-token }}
       run: bash "$GITHUB_ACTION_PATH/setup.sh"
