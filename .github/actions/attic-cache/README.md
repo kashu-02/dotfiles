@@ -11,7 +11,7 @@ Nix / attic → 127.0.0.1:18080 → cloudflared access tcp
 
 ## 自宅と Cloudflare の設定
 
-Attic VM の設定は [servers/hosts/attic/default.nix](https://github.com/kashu-02/servers/blob/main/hosts/attic/default.nix) で管理する。[servers PR #13](https://github.com/kashu-02/servers/pull/13) の TCP 接続対応はマージ済み。VM 上の `servers` checkout を更新し、CI の Secrets を有効にする前に適用する。
+Attic VM の設定は [servers/hosts/attic/default.nix](https://github.com/kashu-02/servers/blob/main/hosts/attic/default.nix) で管理する。[servers PR #13](https://github.com/kashu-02/servers/pull/13) の TCP 接続対応に加え、[PR #14](https://github.com/kashu-02/servers/pull/14) の nginx Host 検証修正が必要。両方が取り込まれた `servers` checkout を VM 上で取得し、CI の Secrets を有効にする前に適用する。
 
 ```sh
 git pull --ff-only
@@ -23,7 +23,7 @@ sudo nixos-rebuild switch --flake .#attic
 1. 自宅の Attic に到達できるホストで Cloudflare Tunnel のコネクターを稼働させる。ルーターの受信ポート開放は不要。
 2. Access に Self-hosted application `attic.kashu.dev` を作成する。CI 用 Service Token を発行し、**Service Auth** ポリシーの Include → Service Token でそのトークンを指定する。
 3. Tunnel の Published application に `attic.kashu.dev` を登録する。Service は **TCP**、転送先は `attic.kashu.internal:80`（現在の内部 URL が指す HTTP サービス）。HTTP タイプではなく TCP タイプを選ぶ。Attic に直接つなぐ場合は実際のホストとポートに置き換える。
-4. 転送先の nginx は `Host: 127.0.0.1:18080` を Attic に転送する。`servers` の設定では `proxy_set_header Host $http_host` でポート番号も保持する。`$host` では `:18080` が落ち、Attic の許可 Host に一致しない。Attic 自体は VM の `127.0.0.1:8080` で待ち受けるため、別ホストの Tunnel コネクターからは nginx の TCP 80 に接続する。
+4. 転送先の nginx は `map` で受信 Host を `attic.kashu.internal` と `127.0.0.1:18080` の固定値に限定し、`proxy_set_header Host $attic_proxy_host` で転送する。これにより CI のポート番号を保持し、未許可 Host は nginx で拒否する。Attic 自体は VM の `127.0.0.1:8080` で待ち受けるため、別ホストの Tunnel コネクターからは nginx の TCP 80 に接続する。
 
 Attic は API URL をクライアントに返し、push はその URL を使用する。CI の接続をローカルのトンネル内に維持するため、サーバーの `api-endpoint` と `substituter-endpoint` の固定値を外し、Host から URL を生成させる。代わりに `allowed-hosts` を必ず限定する。既存の内部クライアントの Host も残す。
 
