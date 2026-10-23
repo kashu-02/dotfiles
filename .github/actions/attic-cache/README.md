@@ -11,10 +11,19 @@ Nix / attic → 127.0.0.1:18080 → cloudflared access tcp
 
 ## 自宅と Cloudflare の設定
 
+Attic VM の設定は [servers/hosts/attic/default.nix](https://github.com/kashu-02/servers/blob/main/hosts/attic/default.nix) で管理する。[servers PR #13](https://github.com/kashu-02/servers/pull/13) の TCP 接続対応はマージ済み。VM 上の `servers` checkout を更新し、CI の Secrets を有効にする前に適用する。
+
+```sh
+git pull --ff-only
+sudo nixos-rebuild switch --flake .#attic
+```
+
+マージだけでは稼働中の Attic／nginx 設定は変わらない。詳細は [servers の運用手順](https://github.com/kashu-02/servers/blob/main/docs/attic.md) を参照する。
+
 1. 自宅の Attic に到達できるホストで Cloudflare Tunnel のコネクターを稼働させる。ルーターの受信ポート開放は不要。
 2. Access に Self-hosted application `attic.kashu.dev` を作成する。CI 用 Service Token を発行し、**Service Auth** ポリシーの Include → Service Token でそのトークンを指定する。
 3. Tunnel の Published application に `attic.kashu.dev` を登録する。Service は **TCP**、転送先は `attic.kashu.internal:80`（現在の内部 URL が指す HTTP サービス）。HTTP タイプではなく TCP タイプを選ぶ。Attic に直接つなぐ場合は実際のホストとポートに置き換える。
-4. 転送先のリバースプロキシを経由する場合、`Host: 127.0.0.1:18080` でも Attic にルーティングされるようにする。難しければ Attic の HTTP リスナーに直接転送する。
+4. 転送先の nginx は `Host: 127.0.0.1:18080` を Attic に転送する。`servers` の設定では `proxy_set_header Host $http_host` でポート番号も保持する。`$host` では `:18080` が落ち、Attic の許可 Host に一致しない。Attic 自体は VM の `127.0.0.1:8080` で待ち受けるため、別ホストの Tunnel コネクターからは nginx の TCP 80 に接続する。
 
 Attic は API URL をクライアントに返し、push はその URL を使用する。CI の接続をローカルのトンネル内に維持するため、サーバーの `api-endpoint` と `substituter-endpoint` の固定値を外し、Host から URL を生成させる。代わりに `allowed-hosts` を必ず限定する。既存の内部クライアントの Host も残す。
 
@@ -23,7 +32,7 @@ allowed-hosts = ["attic.kashu.internal", "127.0.0.1:18080"]
 # api-endpoint / substituter-endpoint は設定しない
 ```
 
-この条件が既存の構成と両立しない場合は、CI 用の Attic API インスタンスを同じ DB／ストレージに接続して固定 URL を分離する。既存サーバーの設定を確認してから適用する。CI は API URL が `http://127.0.0.1:18080/` であることを検査する。
+これらは `servers` の NixOS 設定に反映済み。LAN クライアントには `http://attic.kashu.internal/`、CI には `http://127.0.0.1:18080/` を返す。CI は後者の API URL を検査する。
 
 ## GitHub Actions の Secrets
 
@@ -35,10 +44,10 @@ Repository Settings → Secrets and variables → Actions に登録する。
 | `CF_ACCESS_CLIENT_SECRET` | 同トークンの Client Secret |
 | `ATTIC_TOKEN` | Attic の `main` に pull／push 権限を持つ JWT（取得・送信で共用） |
 
-Tunnel のコネクタートークンや Attic の JWT 署名鍵を GitHub に登録する必要はない。Attic サーバーで設定ファイルを指定して期限付きトークンを発行する例:
+Tunnel のコネクタートークンや Attic の JWT 署名鍵を GitHub に登録する必要はない。Attic VM 上で、NixOS が用意するラッパーから期限付きトークンを発行する:
 
 ```sh
-atticadm -f /path/to/server.toml make-token --sub github-ci --validity 90d --pull main --push main
+sudo atticd-atticadm make-token --sub github-ci --validity '90 days' --pull main --push main
 ```
 
 Service Token と Attic JWT は有効期限前に更新する。キャッシュ署名公開鍵は `hosts/common/nix-cache.nix` と同じ値を setup.sh に設定している。鍵をローテーションした場合は両方を更新する。
