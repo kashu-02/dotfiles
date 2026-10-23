@@ -9,7 +9,7 @@
     ./rofi.nix
     ./ollama.nix
     ./llm/chatgpt.nix
-    ./llm/t3code.nix
+    ./llm/t3code-desktop.nix
   ];
 
   home.packages = with pkgs; [
