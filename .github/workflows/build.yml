@@ -80,7 +80,6 @@ jobs:
         id: attic
         uses: ./.github/actions/attic-cache
         with:
-          team-name: ${{ vars.CF_TEAM_NAME }}
           client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
           client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
           attic-token: ${{ secrets.ATTIC_TOKEN }}
@@ -108,7 +107,7 @@ jobs:
         run: |
           test -n "$ATTIC_TOKEN" || { echo '::error::ATTIC_TOKEN is required for main pushes.'; exit 1; }
           umask 077
-          attic login ci "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
+          attic login ci http://127.0.0.1:18080/ "$ATTIC_TOKEN"
           attic push ci:main ./result
       - name: Clean up Attic connection
         if: always()
@@ -129,7 +128,6 @@ jobs:
         id: attic
         uses: ./.github/actions/attic-cache
         with:
-          team-name: ${{ vars.CF_TEAM_NAME }}
           client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
           client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
           attic-token: ${{ secrets.ATTIC_TOKEN }}
@@ -157,7 +155,7 @@ jobs:
         run: |
           test -n "$ATTIC_TOKEN" || { echo '::error::ATTIC_TOKEN is required for main pushes.'; exit 1; }
           umask 077
-          attic login ci "$ATTIC_ENDPOINT" "$ATTIC_TOKEN"
+          attic login ci http://127.0.0.1:18080/ "$ATTIC_TOKEN"
           attic push ci:main ./result
       - name: Clean up Attic connection
         if: always()
