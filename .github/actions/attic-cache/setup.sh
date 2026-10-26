@@ -37,6 +37,18 @@ if [[ "$ready" != true ]]; then
   echo '::group::cloudflared log'
   cat "$state/cloudflared.log" || true
   echo '::endgroup::'
+  # Replay the WebSocket upgrade cloudflared sends, and show the edge's answer
+  # without cookies or the Access JWT.
+  echo '::group::WebSocket handshake response'
+  curl --silent --show-error --http1.1 --max-time 15 --include --output - \
+    -H "CF-Access-Client-Id: $TUNNEL_SERVICE_TOKEN_ID" \
+    -H "CF-Access-Client-Secret: $TUNNEL_SERVICE_TOKEN_SECRET" \
+    -H 'Connection: Upgrade' -H 'Upgrade: websocket' \
+    -H 'Sec-WebSocket-Version: 13' -H 'Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==' \
+    "https://$ATTIC_HOSTNAME/" 2>&1 \
+    | grep -viE '^(set-cookie|cf-access-jwt-assertion|cf-access-token|cookie):' | head -c 2000 || true
+  echo
+  echo '::endgroup::'
   echo '::error::Attic is unreachable. Check Tunnel TCP routing, Service Auth policy, and Attic token.'
   exit 1
 fi
