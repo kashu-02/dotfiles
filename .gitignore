@@ -1,0 +1,6 @@
+# Local plaintext scratch files and private keys. Encrypted YAML stays tracked.
+/secrets/*.plain.*
+/secrets/*.decrypted.*
+/secrets/*.key
+/secrets/keys.txt
+/secrets/ssh_host_*_key
