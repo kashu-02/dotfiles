@@ -23,6 +23,7 @@ _:
         "cpu"
         "memory"
         "temperature"
+        "pulseaudio"
         "hyprland/language"
         "bluetooth"
         "privacy"
@@ -64,6 +65,13 @@ _:
         format = "Temp: {temperatureC}°C";
         interval = 1;
         hwmon-path = "/sys/class/hwmon/hwmon2/temp1_input";
+      };
+      pulseaudio = {
+        format = "Vol: {volume}% {icon}";
+        format-muted = "Vol: muted";
+        scroll-step = 1;
+        on-click = "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle";
+        on-click-right = "pavucontrol";
       };
       network = {
         interface = "vlan100";
