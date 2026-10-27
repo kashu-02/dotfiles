@@ -15,7 +15,7 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 180
     permissions:
       statuses: write
       checks: read
@@ -26,3 +26,4 @@ jobs:
         with:
           gate-mode: 'private'
           context: 'automerge-gate/all-passed'
+          poll-interval-seconds: '60'

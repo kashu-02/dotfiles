@@ -9,6 +9,8 @@
     ./rofi.nix
     ./ollama.nix
     ./udiskie.nix
+    ./llm/chatgpt.nix
+    ./llm/t3code-desktop.nix
   ];
 
   home.packages = with pkgs; [
@@ -31,5 +33,7 @@
     xclip
     wine
     flameshot
+    unstable.antigravity-hub
+    unstable.antigravity-ide-fhs
   ];
 }

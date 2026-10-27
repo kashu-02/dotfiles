@@ -51,6 +51,11 @@
       flake = false;
     };
 
+    imozuru = {
+      url = "github:MaryCache/imozuru";
+      flake = false;
+    };
+
     google-skills = {
       url = "github:google/skills";
       flake = false;

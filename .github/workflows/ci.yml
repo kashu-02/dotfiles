@@ -23,3 +23,4 @@ jobs:
   build:
     needs: [fmt, lint, flake-check]
     uses: ./.github/workflows/build.yml
+    secrets: inherit
