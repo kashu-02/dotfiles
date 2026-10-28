@@ -232,6 +232,26 @@
         "type": "github"
       }
     },
+    "home-manager-unstable": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs-unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1793124281,
+        "narHash": "sha256-KdGTOgYXgMDA/ymTV10yLMt9tOjz9EmTgnTvaD+bhe4=",
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "rev": "1e3ebeb683d055d1675d3f64e6d2b186cb2ee504",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "home-manager",
+        "type": "github"
+      }
+    },
     "hyprcursor": {
       "inputs": {
         "hyprlang": [
@@ -986,6 +1006,7 @@
         "anthropic-skills": "anthropic-skills",
         "google-skills": "google-skills",
         "home-manager": "home-manager",
+        "home-manager-unstable": "home-manager-unstable",
         "hyprland": "hyprland",
         "hyprpaper": "hyprpaper",
         "imozuru": "imozuru",
