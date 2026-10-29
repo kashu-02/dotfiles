@@ -25,9 +25,9 @@ echo "$!" > "$state/tunnel.pid"
 printf 'machine 127.0.0.1 login ci password %s\n' "$ATTIC_TOKEN" > "$state/netrc"
 ready=false
 for _ in {1..12}; do
-  if curl --silent --show-error --fail --max-time 5 --noproxy '*' \
+  if curl --silent --fail --max-time 15 --noproxy '*' \
     --netrc-file "$state/netrc" http://127.0.0.1:18080/main/nix-cache-info \
-    -o "$state/cache-info" && grep -q '^StoreDir: /nix/store' "$state/cache-info"; then
+    -o "$state/cache-info" 2>/dev/null && grep -q '^StoreDir: /nix/store' "$state/cache-info"; then
     ready=true
     break
   fi
