@@ -71,10 +71,6 @@ jobs:
     needs: changes
     if: needs.changes.outputs.nixos != '[]'
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        config: ${{ fromJson(needs.changes.outputs.nixos) }}
-      fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/determinate-nix-action@v3
@@ -88,20 +84,32 @@ jobs:
       - name: Restore and save Nix store
         uses: nix-community/cache-nix-action@v7
         with:
-          primary-key: nix-${{ runner.os }}-${{ matrix.config }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('flake.nix', 'hosts/**', 'users/**') }}
+          primary-key: nix-${{ runner.os }}-nixos-${{ hashFiles('flake.lock') }}-${{ hashFiles('flake.nix', 'hosts/**', 'users/**') }}
           restore-prefixes-first-match: |
-            nix-${{ runner.os }}-${{ matrix.config }}-${{ hashFiles('flake.lock') }}-
-            nix-${{ runner.os }}-${{ matrix.config }}-
+            nix-${{ runner.os }}-nixos-${{ hashFiles('flake.lock') }}-
+            nix-${{ runner.os }}-nixos-
           gc-max-store-size-linux: 5G
           purge: true
-          purge-prefixes: nix-${{ runner.os }}-${{ matrix.config }}-
+          purge-prefixes: nix-${{ runner.os }}-nixos-
           purge-created: 0
           purge-primary-key: never
-      - name: Dry-run NixOS configuration for ${{ matrix.config }}
-        run: nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --dry-run --print-build-logs
-      - name: Build NixOS configuration for ${{ matrix.config }}
-        run: nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --print-build-logs
-      - name: Push build closure to Attic
+      - name: Dry-run NixOS configurations
+        run: |
+          targets=()
+          for config in $(jq -r '.[]' <<< '${{ needs.changes.outputs.nixos }}'); do
+            targets+=(".#nixosConfigurations.${config}.config.system.build.toplevel")
+          done
+          echo "Dry-running targets: ${targets[*]}"
+          nix build "${targets[@]}" --dry-run --print-build-logs
+      - name: Build NixOS configurations
+        run: |
+          targets=()
+          for config in $(jq -r '.[]' <<< '${{ needs.changes.outputs.nixos }}'); do
+            targets+=(".#nixosConfigurations.${config}.config.system.build.toplevel")
+          done
+          echo "Building targets: ${targets[*]}"
+          nix build "${targets[@]}" --print-build-logs
+      - name: Push build closures to Attic
         if: steps.attic.outputs.enabled == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           ATTIC_WRITE_TOKEN: ${{ secrets.ATTIC_WRITE_TOKEN }}
@@ -110,7 +118,9 @@ jobs:
           test -n "$ATTIC_WRITE_TOKEN" || { echo '::error::ATTIC_WRITE_TOKEN is required for main pushes.'; exit 1; }
           umask 077
           attic login ci http://127.0.0.1:18080/ "$ATTIC_WRITE_TOKEN"
-          attic push ci:main ./result
+          shopt -s nullglob
+          results=(./result*)
+          attic push ci:main "${results[@]}"
       - name: Clean up Attic connection
         if: always()
         run: bash .github/actions/attic-cache/cleanup.sh
@@ -119,10 +129,6 @@ jobs:
     needs: changes
     if: needs.changes.outputs.darwin != '[]'
     runs-on: macos-latest
-    strategy:
-      matrix:
-        config: ${{ fromJson(needs.changes.outputs.darwin) }}
-      fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/determinate-nix-action@v3
@@ -136,20 +142,32 @@ jobs:
       - name: Restore and save Nix store
         uses: nix-community/cache-nix-action@v7
         with:
-          primary-key: nix-${{ runner.os }}-${{ matrix.config }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('flake.nix', 'hosts/**', 'users/**') }}
+          primary-key: nix-${{ runner.os }}-darwin-${{ hashFiles('flake.lock') }}-${{ hashFiles('flake.nix', 'hosts/**', 'users/**') }}
           restore-prefixes-first-match: |
-            nix-${{ runner.os }}-${{ matrix.config }}-${{ hashFiles('flake.lock') }}-
-            nix-${{ runner.os }}-${{ matrix.config }}-
+            nix-${{ runner.os }}-darwin-${{ hashFiles('flake.lock') }}-
+            nix-${{ runner.os }}-darwin-
           gc-max-store-size-macos: 5G
           purge: true
-          purge-prefixes: nix-${{ runner.os }}-${{ matrix.config }}-
+          purge-prefixes: nix-${{ runner.os }}-darwin-
           purge-created: 0
           purge-primary-key: never
-      - name: Dry-run Darwin configuration for ${{ matrix.config }}
-        run: nix build .#darwinConfigurations.${{ matrix.config }}.system --dry-run --print-build-logs
-      - name: Build Darwin configuration for ${{ matrix.config }}
-        run: nix build .#darwinConfigurations.${{ matrix.config }}.system --print-build-logs
-      - name: Push build closure to Attic
+      - name: Dry-run Darwin configurations
+        run: |
+          targets=()
+          for config in $(jq -r '.[]' <<< '${{ needs.changes.outputs.darwin }}'); do
+            targets+=(".#darwinConfigurations.${config}.system")
+          done
+          echo "Dry-running targets: ${targets[*]}"
+          nix build "${targets[@]}" --dry-run --print-build-logs
+      - name: Build Darwin configurations
+        run: |
+          targets=()
+          for config in $(jq -r '.[]' <<< '${{ needs.changes.outputs.darwin }}'); do
+            targets+=(".#darwinConfigurations.${config}.system")
+          done
+          echo "Building targets: ${targets[*]}"
+          nix build "${targets[@]}" --print-build-logs
+      - name: Push build closures to Attic
         if: steps.attic.outputs.enabled == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
         env:
           ATTIC_WRITE_TOKEN: ${{ secrets.ATTIC_WRITE_TOKEN }}
@@ -158,7 +176,9 @@ jobs:
           test -n "$ATTIC_WRITE_TOKEN" || { echo '::error::ATTIC_WRITE_TOKEN is required for main pushes.'; exit 1; }
           umask 077
           attic login ci http://127.0.0.1:18080/ "$ATTIC_WRITE_TOKEN"
-          attic push ci:main ./result
+          shopt -s nullglob
+          results=(./result*)
+          attic push ci:main "${results[@]}"
       - name: Clean up Attic connection
         if: always()
         run: bash .github/actions/attic-cache/cleanup.sh
