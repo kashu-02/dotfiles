@@ -66,7 +66,7 @@ jq -e '."api_endpoint" == "http://127.0.0.1:18080/"' "$state/cache-config.json" 
   echo 'NIX_CONFIG<<ATTIC_NIX_CONFIG'
   printf '%s\n' "${NIX_CONFIG:-}"
   echo 'extra-substituters = http://127.0.0.1:18080/main'
-  echo 'extra-trusted-public-keys = main:MzopzMh+cafOLvaAuu4lETTyiSJQ/PUXaigUkHTCO8g='
+  echo 'extra-trusted-public-keys = main:xPy89rS5DgJ4nmSBaYB8eSp9WQBeRGi8tKzRVTMWAtw='
   echo "netrc-file = $state/netrc"
   echo 'connect-timeout = 5'
   echo 'fallback = true'
