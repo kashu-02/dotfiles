@@ -82,7 +82,7 @@
             name = "home";
             publicKey = "guS5P16cILWXSNXWttsrqyUagoRQA9pB1FXUeM6exls=";
             allowedIPs = [
-              "10.100.0.1/32"
+              "10.100.0.0/24"
               "172.16.10.0/24"
               "192.168.20.0/24"
               "192.168.2.0/24"
@@ -180,9 +180,6 @@
   # Bluetooth Settings
   hardware.bluetooth.enable = true;
   services.blueman.enable = true;
-
-  # Brightness
-  programs.light.enable = true;
 
   # Input devices
   hardware.trackpoint = {
@@ -301,6 +298,7 @@
     unzip
     traceroute
     dig
+    brightnessctl
   ];
 
   # Nix-ld

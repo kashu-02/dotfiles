@@ -8,6 +8,9 @@
     ./wezterm.nix
     ./rofi.nix
     ./ollama.nix
+    ./udiskie.nix
+    ./llm/chatgpt.nix
+    ./llm/t3code-desktop.nix
   ];
 
   home.packages = with pkgs; [
@@ -15,7 +18,7 @@
     slack
     discord
     _1password-gui
-    thunderbird
+    thunderbird-bin
     vlc
     nodejs
     xarchiver
@@ -26,9 +29,11 @@
     pavucontrol
     evince
     htop
-    jetbrains-toolbox
+    unstable.jetbrains-toolbox
     xclip
     wine
     flameshot
+    unstable.antigravity-hub
+    unstable.antigravity-ide-fhs
   ];
 }

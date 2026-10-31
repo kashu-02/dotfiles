@@ -131,8 +131,8 @@
           #  "${modifier}+Shift+q" = "kill";
           # Custom binding
           "${modifier}+g" = "exec google-chrome-stable";
-          "XF86MonBrightnessUp" = "exec light -A 1";
-          "XF86MonBrightnessDown" = "exec light -U 1";
+          "XF86MonBrightnessUp" = "exec brightnessctl set +1%";
+          "XF86MonBrightnessDown" = "exec brightnessctl set 1%-";
           "Print" = "exec flameshot full";
           "Shift+Print" = "exec flameshot gui";
         };

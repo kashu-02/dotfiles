@@ -24,7 +24,23 @@
 
   wayland.windowManager.hyprland = {
     enable = true;
+    configType = "hyprlang";
     systemd.enable = false;
+    extraConfig = ''
+      submap = resize
+      binde = , h, resizeactive, -40 0
+      binde = , j, resizeactive, 0 40
+      binde = , k, resizeactive, 0 -40
+      binde = , l, resizeactive, 40 0
+      binde = SHIFT, h, resizeactive, -120 0
+      binde = SHIFT, j, resizeactive, 0 120
+      binde = SHIFT, k, resizeactive, 0 -120
+      binde = SHIFT, l, resizeactive, 120 0
+      bind = , escape, submap, reset
+      bind = , return, submap, reset
+      bind = , r, submap, reset
+      submap = reset
+    '';
   };
 
   programs.zsh.loginExtra = lib.mkAfter ''
@@ -50,22 +66,52 @@
       "$mod, G, exec, google-chrome-stable"
       "$mod SHIFT, F4, exec, grimblast copy area"
       "$mod, D, exec, rofi -show combi"
+      "$mod, H, movefocus, l"
+      "$mod, J, movefocus, d"
+      "$mod, K, movefocus, u"
+      "$mod, L, movefocus, r"
+      "$mod SHIFT, H, movewindow, l"
+      "$mod SHIFT, J, movewindow, d"
+      "$mod SHIFT, K, movewindow, u"
+      "$mod SHIFT, L, movewindow, r"
+      "$mod ALT, H, swapwindow, l"
+      "$mod ALT, J, swapwindow, d"
+      "$mod ALT, K, swapwindow, u"
+      "$mod ALT, L, swapwindow, r"
+      "$mod, F, fullscreen, 1"
+      "$mod, R, submap, resize"
+      "$mod, SPACE, togglefloating"
+      "$mod, V, pseudo"
       "$mod SHIFT, Q, killactive"
     ]
     ++ (
       # workspaces
-      # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+      # binds $mod + [shift +] {1..0} to [move to] workspace {1..10}
       builtins.concatLists (
-        builtins.genList (
-          i:
-          let
-            ws = i + 1;
-          in
+        builtins.map
+          (
+            key:
+            let
+              ws = if key == 0 then 10 else key;
+              keycode = if key == 0 then 19 else key + 9;
+            in
+            [
+              "$mod, code:${toString keycode}, workspace, ${toString ws}"
+              "$mod SHIFT, code:${toString keycode}, movetoworkspace, ${toString ws}"
+            ]
+          )
           [
-            "$mod, code:1${toString i}, workspace, ${toString ws}"
-            "$mod SHIFT, code:1${toString i}, movetoworkspace, ${toString ws}"
+            1
+            2
+            3
+            4
+            5
+            6
+            7
+            8
+            9
+            0
           ]
-        ) 9
       )
     );
 

@@ -2,28 +2,163 @@ name: "Build"
 
 on:
   workflow_call:
+    secrets:
+      CF_ACCESS_CLIENT_ID:
+        required: false
+      CF_ACCESS_CLIENT_SECRET:
+        required: false
+      ATTIC_READ_TOKEN:
+        required: false
+      ATTIC_WRITE_TOKEN:
+        required: false
+
+permissions:
+  contents: read
+  actions: write
 
 jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      nixos: ${{ steps.diff.outputs.nixos }}
+      darwin: ${{ steps.diff.outputs.darwin }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: DeterminateSystems/determinate-nix-action@v3
+      - id: diff
+        name: Detect changed configurations via drvPath
+        env:
+          BASE_SHA: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+        run: |
+          eval_drvs() {
+            local flake_ref="$1"
+            local nixos darwin
+            nixos=$(nix eval --json "${flake_ref}#nixosConfigurations" --apply 'builtins.mapAttrs (_: v: v.config.system.build.toplevel.drvPath)')
+            darwin=$(nix eval --json "${flake_ref}#darwinConfigurations" --apply 'builtins.mapAttrs (_: v: v.system.drvPath)')
+            jq -n --argjson nixos "$nixos" --argjson darwin "$darwin" '{nixos: $nixos, darwin: $darwin}'
+          }
+
+          echo "Evaluating HEAD derivations..."
+          head_json=$(eval_drvs ".")
+          echo "$head_json" | jq .
+
+          if [ -n "$BASE_SHA" ] && [ "$BASE_SHA" != "0000000000000000000000000000000000000000" ] && git cat-file -e "${BASE_SHA}^{commit}" 2>/dev/null; then
+            echo "Evaluating BASE ($BASE_SHA) derivations..."
+            if ! base_json=$(eval_drvs "git+file://${PWD}?rev=${BASE_SHA}"); then
+              echo "::warning::Failed to evaluate base commit $BASE_SHA; falling back to building all configurations."
+              base_json='{"nixos":{},"darwin":{}}'
+            fi
+          else
+            echo "No valid base commit found; building all configurations."
+            base_json='{"nixos":{},"darwin":{}}'
+          fi
+          echo "$base_json" | jq .
+
+          nixos_changed=$(jq -nc --argjson base "$base_json" --argjson head "$head_json" \
+            '[ $head.nixos | to_entries[] | select(.value != $base.nixos[.key]) | .key ]')
+          darwin_changed=$(jq -nc --argjson base "$base_json" --argjson head "$head_json" \
+            '[ $head.darwin | to_entries[] | select(.value != $base.darwin[.key]) | .key ]')
+
+          echo "Changed NixOS configs: $nixos_changed"
+          echo "Changed Darwin configs: $darwin_changed"
+
+          echo "nixos=$nixos_changed" >> "$GITHUB_OUTPUT"
+          echo "darwin=$darwin_changed" >> "$GITHUB_OUTPUT"
+
   build-nixos:
+    needs: changes
+    if: needs.changes.outputs.nixos != '[]'
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        config:
-          - dev-nix
-          - kashu-lab-nixos
-          - l390-laptop
-          - nixos-desktop
+        config: ${{ fromJson(needs.changes.outputs.nixos) }}
       fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/determinate-nix-action@v3
+      - name: Connect to home Attic cache
+        id: attic
+        uses: ./.github/actions/attic-cache
+        with:
+          client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          attic-token: ${{ secrets.ATTIC_READ_TOKEN }}
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ matrix.config }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('flake.nix', 'hosts/**', 'users/**') }}
+          restore-prefixes-first-match: |
+            nix-${{ runner.os }}-${{ matrix.config }}-${{ hashFiles('flake.lock') }}-
+            nix-${{ runner.os }}-${{ matrix.config }}-
+          gc-max-store-size-linux: 5G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-${{ matrix.config }}-
+          purge-created: 0
+          purge-primary-key: never
+      - name: Dry-run NixOS configuration for ${{ matrix.config }}
+        run: nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --dry-run --print-build-logs
       - name: Build NixOS configuration for ${{ matrix.config }}
         run: nix build .#nixosConfigurations.${{ matrix.config }}.config.system.build.toplevel --print-build-logs
+      - name: Push build closure to Attic
+        if: steps.attic.outputs.enabled == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          ATTIC_WRITE_TOKEN: ${{ secrets.ATTIC_WRITE_TOKEN }}
+          XDG_CONFIG_HOME: ${{ runner.temp }}/attic-ci/config
+        run: |
+          test -n "$ATTIC_WRITE_TOKEN" || { echo '::error::ATTIC_WRITE_TOKEN is required for main pushes.'; exit 1; }
+          umask 077
+          attic login ci http://127.0.0.1:18080/ "$ATTIC_WRITE_TOKEN"
+          attic push ci:main ./result
+      - name: Clean up Attic connection
+        if: always()
+        run: bash .github/actions/attic-cache/cleanup.sh
 
   build-darwin:
+    needs: changes
+    if: needs.changes.outputs.darwin != '[]'
     runs-on: macos-latest
+    strategy:
+      matrix:
+        config: ${{ fromJson(needs.changes.outputs.darwin) }}
+      fail-fast: false
     steps:
       - uses: actions/checkout@v4
       - uses: DeterminateSystems/determinate-nix-action@v3
-      - name: Build Darwin configuration
-        run: nix build .#darwinConfigurations.Shunsukes-MacBook-Air.system --print-build-logs
+      - name: Connect to home Attic cache
+        id: attic
+        uses: ./.github/actions/attic-cache
+        with:
+          client-id: ${{ secrets.CF_ACCESS_CLIENT_ID }}
+          client-secret: ${{ secrets.CF_ACCESS_CLIENT_SECRET }}
+          attic-token: ${{ secrets.ATTIC_READ_TOKEN }}
+      - name: Restore and save Nix store
+        uses: nix-community/cache-nix-action@v7
+        with:
+          primary-key: nix-${{ runner.os }}-${{ matrix.config }}-${{ hashFiles('flake.lock') }}-${{ hashFiles('flake.nix', 'hosts/**', 'users/**') }}
+          restore-prefixes-first-match: |
+            nix-${{ runner.os }}-${{ matrix.config }}-${{ hashFiles('flake.lock') }}-
+            nix-${{ runner.os }}-${{ matrix.config }}-
+          gc-max-store-size-macos: 5G
+          purge: true
+          purge-prefixes: nix-${{ runner.os }}-${{ matrix.config }}-
+          purge-created: 0
+          purge-primary-key: never
+      - name: Dry-run Darwin configuration for ${{ matrix.config }}
+        run: nix build .#darwinConfigurations.${{ matrix.config }}.system --dry-run --print-build-logs
+      - name: Build Darwin configuration for ${{ matrix.config }}
+        run: nix build .#darwinConfigurations.${{ matrix.config }}.system --print-build-logs
+      - name: Push build closure to Attic
+        if: steps.attic.outputs.enabled == 'true' && github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          ATTIC_WRITE_TOKEN: ${{ secrets.ATTIC_WRITE_TOKEN }}
+          XDG_CONFIG_HOME: ${{ runner.temp }}/attic-ci/config
+        run: |
+          test -n "$ATTIC_WRITE_TOKEN" || { echo '::error::ATTIC_WRITE_TOKEN is required for main pushes.'; exit 1; }
+          umask 077
+          attic login ci http://127.0.0.1:18080/ "$ATTIC_WRITE_TOKEN"
+          attic push ci:main ./result
+      - name: Clean up Attic connection
+        if: always()
+        run: bash .github/actions/attic-cache/cleanup.sh
