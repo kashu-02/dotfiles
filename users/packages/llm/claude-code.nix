@@ -10,6 +10,7 @@
     package = pkgs.llm-agents.claude-code;
     settings = {
       includeCoAuthoredBy = false;
+      remoteControlAtStartup = true;
       statusLine = {
         type = "command";
         command = toString (
