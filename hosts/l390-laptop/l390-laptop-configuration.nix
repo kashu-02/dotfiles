@@ -311,7 +311,7 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 90d";
+    options = "--delete-older-than 60d";
   };
 
   # Some programs need SUID wrappers, can be configured further or are
