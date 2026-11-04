@@ -1,0 +1,10 @@
+keys:
+  - &admin age1pzvvk6cj3wdjwmlnhehfrcr2yy943dq4q8an7r82f5njglckhg6s03yl87
+
+creation_rules:
+  # Add host-specific rules above this editor-only bootstrap rule.
+  # Each host rule must include both *admin and the host's age recipient.
+  - path_regex: ^secrets/[^/]+\.yaml$
+    key_groups:
+      - age:
+          - *admin
