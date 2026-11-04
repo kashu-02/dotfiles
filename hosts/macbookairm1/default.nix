@@ -9,6 +9,17 @@
   # Necessary for using flakes on this system.
   nix.settings.experimental-features = "nix-command flakes";
 
+  # Run garbage collection weekly, removing generations older than 60 days.
+  nix.gc = {
+    automatic = true;
+    interval = {
+      Weekday = 0;
+      Hour = 0;
+      Minute = 0;
+    };
+    options = "--delete-older-than 60d";
+  };
+
   # Enable alternative shell support in nix-darwin.
   # programs.fish.enable = true;
 

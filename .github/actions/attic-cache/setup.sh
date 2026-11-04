@@ -24,13 +24,15 @@ echo "$!" > "$state/tunnel.pid"
 # Nix uses HTTP Basic authentication (netrc); Attic accepts the JWT as password.
 printf 'machine 127.0.0.1 login ci password %s\n' "$ATTIC_TOKEN" > "$state/netrc"
 ready=false
-for _ in {1..12}; do
-  if curl --silent --show-error --fail --max-time 5 --noproxy '*' \
+for i in {1..12}; do
+  if curl --silent --fail --max-time 15 --noproxy '*' \
     --netrc-file "$state/netrc" http://127.0.0.1:18080/main/nix-cache-info \
-    -o "$state/cache-info" && grep -q '^StoreDir: /nix/store' "$state/cache-info"; then
+    -o "$state/cache-info" 2>/dev/null && grep -q '^StoreDir: /nix/store' "$state/cache-info"; then
     ready=true
+    echo "Connected to Attic cache on attempt $i."
     break
   fi
+  echo "Waiting for Attic tunnel (attempt $i/12)..."
   sleep 1
 done
 if [[ "$ready" != true ]]; then
@@ -53,6 +55,10 @@ if [[ "$ready" != true ]]; then
   exit 1
 fi
 
+echo '::group::Attic cache info'
+cat "$state/cache-info"
+echo '::endgroup::'
+
 # Attic push follows the advertised API endpoint. Reject any route outside the tunnel.
 curl --silent --show-error --fail --max-time 15 --noproxy '*' \
   --netrc-file "$state/netrc" http://127.0.0.1:18080/_api/v1/cache-config/main \
@@ -61,12 +67,13 @@ jq -e '."api_endpoint" == "http://127.0.0.1:18080/"' "$state/cache-config.json" 
   echo '::error::Attic must advertise http://127.0.0.1:18080/. Unset api-endpoint on the server and allow the local Host header.'
   exit 1
 }
+echo "Attic API endpoint verified: $(jq -r '.api_endpoint' "$state/cache-config.json")"
 
 {
   echo 'NIX_CONFIG<<ATTIC_NIX_CONFIG'
   printf '%s\n' "${NIX_CONFIG:-}"
   echo 'extra-substituters = http://127.0.0.1:18080/main'
-  echo 'extra-trusted-public-keys = main:MzopzMh+cafOLvaAuu4lETTyiSJQ/PUXaigUkHTCO8g='
+  echo 'extra-trusted-public-keys = main:xPy89rS5DgJ4nmSBaYB8eSp9WQBeRGi8tKzRVTMWAtw='
   echo "netrc-file = $state/netrc"
   echo 'connect-timeout = 5'
   echo 'fallback = true'

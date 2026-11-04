@@ -8,6 +8,7 @@
     ./wezterm.nix
     ./rofi.nix
     ./ollama.nix
+    ./udiskie.nix
     ./llm/chatgpt.nix
     ./llm/t3code-desktop.nix
   ];
@@ -17,7 +18,7 @@
     slack
     discord
     _1password-gui
-    thunderbird
+    thunderbird-bin
     vlc
     nodejs
     xarchiver

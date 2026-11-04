@@ -19,7 +19,7 @@ in
     ];
 
     extra-trusted-public-keys = [
-      "main:MzopzMh+cafOLvaAuu4lETTyiSJQ/PUXaigUkHTCO8g="
+      "main:xPy89rS5DgJ4nmSBaYB8eSp9WQBeRGi8tKzRVTMWAtw="
     ];
 
     # 内部ネットワーク外 (attic.kashu.internal 不達時) でも即座にフォールバックさせる
