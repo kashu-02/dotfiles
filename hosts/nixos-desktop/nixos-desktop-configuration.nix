@@ -193,7 +193,7 @@
   nix.gc = {
     automatic = true;
     dates = "weekly";
-    options = "--delete-older-than 90d";
+    options = "--delete-older-than 60d";
   };
 
   fileSystems."/mnt/dev" = {
