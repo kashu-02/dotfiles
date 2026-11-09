@@ -23,11 +23,11 @@
     "anthropic-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1793215238,
-        "narHash": "sha256-MkCOANBAqCc1WmNf7S8PsyAphGJAIzEXGyCm8RrCR9M=",
+        "lastModified": 1794004348,
+        "narHash": "sha256-dRCZrNarCCJFuvATgfW6qmwwVS5HGFXNVGOhbVZd7LA=",
         "owner": "anthropics",
         "repo": "skills",
-        "rev": "ca45fc496a3436251f191354091d557da31c15b5",
+        "rev": "2c5958ecac7cee2b583967a2c4981d0f4a75c579",
         "type": "github"
       },
       "original": {
@@ -198,11 +198,11 @@
     "google-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1794002477,
-        "narHash": "sha256-No9JkPisvvjbjcrpr7zkxPRruZCBCR0dqVjsD2tmtiE=",
+        "lastModified": 1794062493,
+        "narHash": "sha256-5+NvLRo9tBkhd9z05oWfK+EKcq3fihMRGPzqMOSb3pA=",
         "owner": "google",
         "repo": "skills",
-        "rev": "993b979cf055de97dd15d4d5751d2672de561679",
+        "rev": "2194d3b8b1f31975fef2f1a0ae6b9ab55bd7ceee",
         "type": "github"
       },
       "original": {
@@ -827,11 +827,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1793949034,
-        "narHash": "sha256-xws6ZOZuv6+BtqF9BZ9NRH5GdJ8zTa/ACN9lNeKC/+s=",
+        "lastModified": 1794082768,
+        "narHash": "sha256-HqmGZDtD54Zznbb1yvk54oQaZCU2m/s+j78c5VgzWZM=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "baf924369e8d5ec02af1eab444db411d6fed1e5e",
+        "rev": "f24cf34af902f72498f7cebdbc7c73b8bc54c722",
         "type": "github"
       },
       "original": {
@@ -845,11 +845,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1793973141,
-        "narHash": "sha256-XpDVB9eYk6mZSMqrQEOGsFd2TobePIiSkHNPwnCqt9M=",
+        "lastModified": 1794004984,
+        "narHash": "sha256-/qizA603yK/rMcunfGUGcxJ8CyMHNNzIiQs1H6ozljc=",
         "owner": "natsukium",
         "repo": "mcp-servers-nix",
-        "rev": "bf6defc19256ca0322544219f6b680fe854e7699",
+        "rev": "4c8248eccec98c2ebe59765c644359e5f6aeb0ea",
         "type": "github"
       },
       "original": {
@@ -1054,11 +1054,11 @@
     "routeros-skills": {
       "flake": false,
       "locked": {
-        "lastModified": 1793579354,
-        "narHash": "sha256-t6/DUEv65m+pEXa8bUvV3xHFWuZEHru2RREciNvu2sA=",
+        "lastModified": 1794084964,
+        "narHash": "sha256-xzuvhDU57YzA+vm/UDzYdtLX+Vejw9iWEwAq/3jGiKc=",
         "owner": "tikoci",
         "repo": "routeros-skills",
-        "rev": "55941deb75fb02be34a802a214c669a3c7228227",
+        "rev": "1982e24ec06297caeb0acc171bd6e0e3f23e1701",
         "type": "github"
       },
       "original": {
