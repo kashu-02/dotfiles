@@ -62,8 +62,8 @@
       "jetbrains-toolbox"
     ];
     bind = [
-      # Launch WezTerm in the UWSM session slice with soft memory protection.
-      "$mod, RETURN, exec, uwsm app -s s -p MemoryLow=256M -- $term"
+      # Launch WezTerm in the protected UWSM session-graphical slice.
+      "$mod, RETURN, exec, uwsm app -s s -- $term"
       "$mod, G, exec, google-chrome-stable"
       "$mod SHIFT, F4, exec, grimblast copy area"
       "$mod, D, exec, rofi -show combi"

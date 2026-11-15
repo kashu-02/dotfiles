@@ -148,6 +148,7 @@
 
   # UWSM starts Hyprland under session.slice.
   systemd.user.slices.session.sliceConfig.MemoryLow = "768M";
+  systemd.user.slices.session-graphical.sliceConfig.MemoryLow = "256M";
 
   # earlyoom matches /proc/PID/comm (truncated to 15 bytes).
   # Discourage killing the compositor and terminal, rather than ignoring them.
