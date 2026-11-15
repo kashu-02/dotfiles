@@ -143,6 +143,19 @@
     xwayland.enable = true;
   };
 
+  # Favor interactive users during reclaim. This is not a hard RAM reserve.
+  systemd.slices.user.sliceConfig.MemoryLow = "1G";
+
+  # UWSM starts Hyprland under session.slice.
+  systemd.user.slices.session.sliceConfig.MemoryLow = "768M";
+
+  # earlyoom matches /proc/PID/comm (truncated to 15 bytes).
+  # Discourage killing the compositor and terminal, rather than ignoring them.
+  services.earlyoom.extraArgs = [
+    "--avoid"
+    "^(Hyprland|wezterm-gui|wezterm-mux-ser)$"
+  ];
+
   programs.zsh.enable = true;
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
