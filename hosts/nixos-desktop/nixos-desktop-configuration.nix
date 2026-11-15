@@ -12,6 +12,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./nixos-desktop-hardware-configuration.nix
+    ../common/memory-pressure.nix
   ];
 
   # Bootloader.
@@ -20,7 +21,7 @@
 
   boot.initrd.systemd.enable = true;
   boot.kernelParams = [
-    "zswap.enabled=1" # enables zswap
+    "zswap.enabled=1" # keep the existing disk-backed compressed swap
     "zswap.compressor=lz4" # compression algorithm
     "zswap.max_pool_percent=20" # maximum percentage of RAM that zswap is allowed to use
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
@@ -141,6 +142,20 @@
     withUWSM = true;
     xwayland.enable = true;
   };
+
+  # Favor interactive users during reclaim. This is not a hard RAM reserve.
+  systemd.slices.user.sliceConfig.MemoryLow = "1G";
+
+  # UWSM starts Hyprland under session.slice.
+  systemd.user.slices.session.sliceConfig.MemoryLow = "768M";
+  systemd.user.slices.session-graphical.sliceConfig.MemoryLow = "256M";
+
+  # earlyoom matches /proc/PID/comm (truncated to 15 bytes).
+  # Discourage killing the compositor and terminal, rather than ignoring them.
+  services.earlyoom.extraArgs = [
+    "--avoid"
+    "^(Hyprland|wezterm-gui|wezterm-mux-ser)$"
+  ];
 
   programs.zsh.enable = true;
 

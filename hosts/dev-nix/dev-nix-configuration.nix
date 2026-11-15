@@ -8,6 +8,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./dev-nix-hardware-configuration.nix
+    ../common/memory-pressure.nix
   ];
 
   # Bootloader.
@@ -202,6 +203,13 @@
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 60d";
+  };
+
+  # Compressed swap handles short bursts before falling back to the disk swapfile.
+  zramSwap = {
+    enable = true;
+    algorithm = "zstd";
+    memoryPercent = 50;
   };
 
   swapDevices = [

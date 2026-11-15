@@ -62,7 +62,8 @@
       "jetbrains-toolbox"
     ];
     bind = [
-      "$mod, RETURN, exec, $term"
+      # Launch WezTerm in the protected UWSM session-graphical slice.
+      "$mod, RETURN, exec, uwsm app -s s -- $term"
       "$mod, G, exec, google-chrome-stable"
       "$mod SHIFT, F4, exec, grimblast copy area"
       "$mod, D, exec, rofi -show combi"
