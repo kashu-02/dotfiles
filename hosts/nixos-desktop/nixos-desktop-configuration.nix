@@ -12,6 +12,7 @@
   imports = [
     # Include the results of the hardware scan.
     ./nixos-desktop-hardware-configuration.nix
+    ../common/memory-pressure.nix
   ];
 
   # Bootloader.
@@ -20,7 +21,7 @@
 
   boot.initrd.systemd.enable = true;
   boot.kernelParams = [
-    "zswap.enabled=1" # enables zswap
+    "zswap.enabled=1" # keep the existing disk-backed compressed swap
     "zswap.compressor=lz4" # compression algorithm
     "zswap.max_pool_percent=20" # maximum percentage of RAM that zswap is allowed to use
     "zswap.shrinker_enabled=1" # whether to shrink the pool proactively on high memory pressure
