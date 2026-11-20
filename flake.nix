@@ -20,6 +20,11 @@
       inputs.nixpkgs.follows = "nixpkgs-unstable";
     };
 
+    sops-nix = {
+      url = "github:Mic92/sops-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     treefmt-nix = {
       url = "github:numtide/treefmt-nix";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -104,6 +109,7 @@
       nixpkgs-unstable,
       nix-darwin,
       home-manager,
+      sops-nix,
       treefmt-nix,
       systems,
       nix-claude-code,
@@ -134,6 +140,8 @@
           inherit system;
           modules = [
             ./hosts/common/nix-cache.nix
+            sops-nix.nixosModules.sops
+            ./hosts/common/sops.nix
             ./hosts/dev-nix/dev-nix-configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -167,6 +175,8 @@
           inherit system;
           modules = [
             ./hosts/common/nix-cache.nix
+            sops-nix.nixosModules.sops
+            ./hosts/common/sops.nix
             ./hosts/lab-pc/kashu-lab-nixos-configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -200,6 +210,8 @@
           inherit system;
           modules = [
             ./hosts/common/nix-cache.nix
+            sops-nix.nixosModules.sops
+            ./hosts/common/sops.nix
             ./hosts/l390-laptop/l390-laptop-configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -234,6 +246,8 @@
           specialArgs = { inherit inputs; };
           modules = [
             ./hosts/common/nix-cache.nix
+            sops-nix.nixosModules.sops
+            ./hosts/common/sops.nix
             ./hosts/nixos-desktop/nixos-desktop-configuration.nix
             home-manager.nixosModules.home-manager
             {
@@ -267,6 +281,8 @@
           inherit system;
           modules = [
             ./hosts/common/nix-cache.nix
+            sops-nix.darwinModules.sops
+            ./hosts/common/sops.nix
             ./hosts/macbookairm1
             home-manager.darwinModules.home-manager
             {
